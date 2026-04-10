@@ -10,7 +10,7 @@ from pathlib import Path
 
 from src.models import SOURCES_CONFIG, DataFile, Source
 from src.normalizer import deduplicate_methods
-from src.parsers import telegram, github_readme, xbox_dns_ru, xbox_news_ru, github_skorches
+from src.parsers import telegram, github_readme, xbox_dns_ru, xbox_news_ru, github_skorches, teletype_faqi, sport24
 
 logging.basicConfig(
     level=logging.INFO,
@@ -30,6 +30,8 @@ PARSERS = {
     "src-xbox-dns-ru": xbox_dns_ru.parse,
     "src-xbox-news-ru": xbox_news_ru.parse,
     "src-skorches": github_skorches.parse,
+    "src-teletype-faqi": teletype_faqi.parse,
+    "src-sport24": sport24.parse,
 }
 
 
@@ -58,6 +60,21 @@ def run() -> None:
 
     all_methods = []
     sources_status: list[Source] = []
+
+    # Ручные записи (от пользователей, не из парсеров)
+    from src.normalizer import generate_method_id
+    manual_methods = [
+        {
+            "id": generate_method_id("dns_pair", "31.129.110.240"),
+            "type": "dns_pair", "difficulty": "easy",
+            "primary_dns": "31.129.110.240", "secondary_dns": None,
+            "description": None,
+            "sources": ["manual"], "source_urls": [],
+            "first_seen": "2026-04-10", "last_seen": today,
+            "active": True, "recheck": False, "instruction_url": None,
+        },
+    ]
+    all_methods.extend(manual_methods)
 
     for cfg in SOURCES_CONFIG:
         source_id = cfg["id"]

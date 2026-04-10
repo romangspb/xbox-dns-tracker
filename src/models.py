@@ -78,4 +78,16 @@ SOURCES_CONFIG: list[Source] = [
         "type": "github",
         "url": "https://github.com/skorches/xbox-dns-bypass",
     },
+    {
+        "id": "src-teletype-faqi",
+        "name": "teletype.in/@faqi (гайд)",
+        "type": "website",
+        "url": "https://teletype.in/@faqi/Nastroyka-DNS-dlya-Xbox-Series-X-S-v-Rossii-2025-o",
+    },
+    {
+        "id": "src-sport24",
+        "name": "sport24.ru (гайд)",
+        "type": "website",
+        "url": "https://sport24.ru/cybersport/article-kak-oboyti-oshibku-regiona-na-xbox",
+    },
 ]
