@@ -390,6 +390,16 @@ function renderCard(method, currentUser) {
   const summaryText = worksCount > 0 ? `${worksCount}/${USERS.length}` : '';
   const recommendedBadge = isRecommended ? '<span class="recommended-badge">★</span>' : '';
 
+  // Кнопка "Проверить с моего устройства" (только для xsts)
+  let deviceCheckHtml = '';
+  if (isXsts && method.primary_dns) {
+    deviceCheckHtml = `
+      <div class="device-check" data-ip="${method.primary_dns}">
+        <button class="device-check-btn" onclick="checkXstsFromDevice('${method.primary_dns}', this)">Проверить с моего устройства</button>
+      </div>
+    `;
+  }
+
   card.innerHTML = `
     <div class="dns-card-header">
       ${recommendedBadge}
@@ -399,6 +409,7 @@ function renderCard(method, currentUser) {
     <div class="dns-meta">
       <span class="dns-sources">${sourceCount} ${sourceCount === 1 ? 'источник' : sourceCount < 5 ? 'источника' : 'источников'}</span>
     </div>
+    ${deviceCheckHtml}
     <div class="user-statuses">
       ${circlesHtml}
       <span class="status-summary">${summaryText}</span>
@@ -406,6 +417,38 @@ function renderCard(method, currentUser) {
   `;
 
   return card;
+}
+
+// --- Проверка xsts IP с устройства пользователя ---
+
+async function checkXstsFromDevice(ip, btn) {
+  btn.disabled = true;
+  btn.textContent = 'Проверяю...';
+  btn.className = 'device-check-btn checking';
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+  try {
+    // no-cors режим: браузер пошлёт запрос, но не даст читать ответ.
+    // Нам это и не нужно — важен сам факт: достучались или нет.
+    await fetch(`https://${ip}/`, {
+      mode: 'no-cors',
+      signal: controller.signal,
+      cache: 'no-store',
+    });
+    clearTimeout(timeoutId);
+    btn.textContent = '✓ Доступен с твоего устройства';
+    btn.className = 'device-check-btn success';
+  } catch (e) {
+    clearTimeout(timeoutId);
+    if (e.name === 'AbortError') {
+      btn.textContent = '✗ Не ответил за 5 сек';
+    } else {
+      btn.textContent = '✗ Недоступен из твоей сети';
+    }
+    btn.className = 'device-check-btn failed';
+  }
 }
 
 // --- Переключение статуса ---
