@@ -38,6 +38,14 @@ const DIFFICULTY_ORDER = ['easy', 'medium', 'hard'];
 // Фильтры
 let filterType = 'dns_v4';            // 'dns_v4' | 'dns_v6' | 'xsts'
 let filterStatuses = new Set(['all']); // мульти-выбор: Set of statuses или 'all'
+let filterReachable = false;          // показывать только reachable (Phase 4)
+
+// === v1.0.6: reachability check ===
+// reachabilityResults: { methodId: 'reachable' | 'unreachable' | 'unknown' } или null
+let reachabilityResults = null;
+let lastCheckAt = null;
+let checkInProgress = false;
+const REACH_CACHE_TTL_MS = 60 * 60 * 1000; // 1 час
 
 // --- Хранилище ---
 
@@ -77,6 +85,38 @@ function getMethodIPVersion(method) {
 
 // --- Модальные окна ---
 
+// Блокировка скролла body пока открыта модалка — решает iOS баг
+// «первое касание мимо контента в модалке начинает скроллить фон»
+function lockBodyScroll() {
+  document.body.style.overflow = 'hidden';
+  document.body.style.touchAction = 'none';
+}
+
+function unlockBodyScroll() {
+  document.body.style.overflow = '';
+  document.body.style.touchAction = '';
+}
+
+// Универсальный helper: закрыть модалку и разблокировать скролл
+function closeModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (!modal) return;
+  modal.classList.remove('active');
+  unlockBodyScroll();
+}
+
+// Закрытие модалки по клику на overlay (но не на content)
+function bindOverlayClose(modalId) {
+  const modal = document.getElementById(modalId);
+  if (!modal) return;
+  modal.addEventListener('click', (e) => {
+    // Закрываем только если клик был в сам overlay, а не в его содержимое
+    if (e.target === modal) {
+      closeModal(modalId);
+    }
+  });
+}
+
 function showUserPicker() {
   const modal = document.getElementById('user-modal');
   const picker = document.getElementById('user-picker');
@@ -87,15 +127,18 @@ function showUserPicker() {
     btn.onclick = () => {
       setCurrentUser(name);
       modal.classList.remove('active');
+      unlockBodyScroll();
       renderAll();
     };
     picker.appendChild(btn);
   });
   modal.classList.add('active');
+  lockBodyScroll();
 }
 
 function showHelp() {
   document.getElementById('help-modal').classList.add('active');
+  lockBodyScroll();
 }
 
 function showStatusPopup(status, el, e) {
@@ -234,13 +277,20 @@ function renderFilters() {
       { key: 'unchecked', label: 'Не проверен' },
     ];
 
-    const statusBtns = statusOptions
+    let statusBtns = statusOptions
       .filter(o => o.key === 'all' || statusCounts[o.key])
       .map(o => {
         const cnt = o.key === 'all' ? typed.length : (statusCounts[o.key] || 0);
         const active = filterStatuses.has(o.key) ? ' active' : '';
         return `<button class="status-filter-btn${active}" onclick="toggleStatusFilter('${o.key}')">${o.label} <span class="filter-count">${cnt}</span></button>`;
       }).join('');
+
+    // v1.0.6: фильтр «только доступные» — виден только после первой проверки
+    if (reachabilityResults) {
+      const reachableInType = typed.filter(m => reachabilityResults[m.id] === 'reachable').length;
+      const active = filterReachable ? ' active' : '';
+      statusBtns += `<button class="status-filter-btn${active}" onclick="toggleReachableFilter()">✓ Доступные <span class="filter-count">${reachableInType}</span></button>`;
+    }
 
     statusHtml = `<div class="status-filters">${statusBtns}</div>`;
   }
@@ -265,6 +315,7 @@ function renderAll() {
   });
 
   renderFilters();
+  renderReachabilityResult();
 
   // Фильтрация
   let methods;
@@ -279,6 +330,11 @@ function renderAll() {
   // Фильтр по статусу
   if (!filterStatuses.has('all')) {
     methods = methods.filter(m => filterStatuses.has(m.dns_check?.status || 'unchecked'));
+  }
+
+  // v1.0.6: фильтр «только доступные» (по результатам проверки доступа)
+  if (filterReachable && reachabilityResults) {
+    methods = methods.filter(m => reachabilityResults[m.id] === 'reachable');
   }
 
   // Сортировка
@@ -353,6 +409,19 @@ function renderCard(method, currentUser) {
   // Статус-бейдж (кликабельный)
   let statusHtml = `<span class="dns-status ${checkStatus}" onclick="showStatusPopup('${checkStatus}', this, event)">${statusLabel}</span>`;
 
+  // v1.0.6: метка доступности из реальной сети пользователя
+  let reachMarkHtml = '';
+  if (reachabilityResults) {
+    const r = reachabilityResults[method.id];
+    if (r === 'reachable') {
+      reachMarkHtml = '<span class="reach-mark reach-ok" title="Вероятно сработает из твоей сети — попробуй на Xbox">✓</span>';
+    } else if (r === 'unreachable') {
+      reachMarkHtml = '<span class="reach-mark reach-fail" title="Точно не сработает из твоей сети">✗</span>';
+    } else if (r === 'unknown') {
+      reachMarkHtml = '<span class="reach-mark reach-unknown" title="Не хватило данных для проверки">?</span>';
+    }
+  }
+
   let ipHtml = '';
   if (method.primary_dns) {
     ipHtml += `
@@ -402,6 +471,7 @@ function renderCard(method, currentUser) {
 
   card.innerHTML = `
     <div class="dns-card-header">
+      ${reachMarkHtml}
       ${recommendedBadge}
       ${statusHtml}
     </div>
@@ -451,6 +521,159 @@ async function checkXstsFromDevice(ip, btn) {
   }
 }
 
+// --- v1.0.6: массовая проверка доступа к Xbox ---
+
+function hasVpnAcknowledged() {
+  return localStorage.getItem('xbox_vpn_ack') === 'true';
+}
+
+function showVpnWarning() {
+  document.getElementById('vpn-modal').classList.add('active');
+  lockBodyScroll();
+}
+
+function acknowledgeVpn() {
+  localStorage.setItem('xbox_vpn_ack', 'true');
+  closeModal('vpn-modal');
+  // После подтверждения сразу запускаем проверку
+  runFullCheck();
+}
+
+function loadReachabilityCache() {
+  try {
+    const raw = localStorage.getItem('xbox_reach_results');
+    if (!raw) return;
+    const parsed = JSON.parse(raw);
+    if (!parsed || !parsed.timestamp || !parsed.results) return;
+    if (Date.now() - parsed.timestamp < REACH_CACHE_TTL_MS) {
+      reachabilityResults = parsed.results;
+      lastCheckAt = parsed.timestamp;
+    }
+  } catch {}
+}
+
+function saveReachabilityCache() {
+  if (!reachabilityResults || !lastCheckAt) return;
+  localStorage.setItem('xbox_reach_results', JSON.stringify({
+    timestamp: lastCheckAt,
+    results: reachabilityResults,
+  }));
+}
+
+// STUB для Phase 4: имитирует проверку с mock-результатами.
+// Реальная логика (сбор target IPs, fetch через /api/resolve, параллельный probe)
+// будет в Phase 5.
+async function runFullCheck(forceRefresh = false) {
+  if (checkInProgress) return;
+
+  // Первый клик — показать предупреждение про VPN
+  if (!hasVpnAcknowledged()) {
+    showVpnWarning();
+    return;
+  }
+
+  // Если недавно уже проверяли — не дёргаем заново (кроме forceRefresh)
+  if (!forceRefresh && reachabilityResults && lastCheckAt
+      && Date.now() - lastCheckAt < REACH_CACHE_TTL_MS) {
+    // уже отрендерено, ничего не делаем
+    return;
+  }
+
+  checkInProgress = true;
+  const btn = document.getElementById('check-all-btn');
+  btn.disabled = true;
+  btn.classList.add('checking');
+  btn.innerHTML = '<span class="check-all-spinner"></span><span>Проверяю... 0 / 0</span>';
+
+  if (!appData) {
+    checkInProgress = false;
+    btn.disabled = false;
+    btn.classList.remove('checking');
+    btn.innerHTML = '<span class="check-all-icon">⚡</span><span class="check-all-text">Проверить мой доступ к Xbox</span>';
+    return;
+  }
+
+  const methods = appData.methods.filter(m => m.active !== false);
+  const total = methods.length;
+
+  // STUB: имитируем прогресс 2 секунды
+  for (let i = 1; i <= total; i += Math.max(1, Math.floor(total / 5))) {
+    btn.innerHTML = `<span class="check-all-spinner"></span><span>Проверяю... ${Math.min(i, total)} / ${total}</span>`;
+    await new Promise(r => setTimeout(r, 400));
+  }
+
+  // STUB: генерируем mock-результаты для визуализации UI
+  const mock = {};
+  methods.forEach(m => {
+    if (m.type === 'dns_pair' && isIPv6(m.primary_dns)) {
+      mock[m.id] = 'unknown';  // IPv6 не проверяем
+    } else {
+      // 30% reachable, 60% unreachable, 10% unknown — для демо разнообразия
+      const r = Math.random();
+      if (r < 0.3) mock[m.id] = 'reachable';
+      else if (r < 0.9) mock[m.id] = 'unreachable';
+      else mock[m.id] = 'unknown';
+    }
+  });
+
+  reachabilityResults = mock;
+  lastCheckAt = Date.now();
+  saveReachabilityCache();
+
+  checkInProgress = false;
+  btn.disabled = false;
+  btn.classList.remove('checking');
+  btn.innerHTML = '<span class="check-all-icon">⚡</span><span class="check-all-text">Проверить ещё раз</span>';
+
+  renderAll();
+}
+
+function renderReachabilityResult() {
+  const el = document.getElementById('reachability-result');
+  if (!reachabilityResults) {
+    el.innerHTML = '';
+    return;
+  }
+
+  const entries = Object.values(reachabilityResults);
+  const total = entries.length;
+  const reachable = entries.filter(r => r === 'reachable').length;
+  const unknown = entries.filter(r => r === 'unknown').length;
+
+  const when = new Date(lastCheckAt).toLocaleTimeString('ru-RU', {
+    hour: '2-digit', minute: '2-digit'
+  });
+
+  const bigClass = reachable === 0 ? 'reach-big zero' : 'reach-big';
+  const warningHtml = reachable === 0
+    ? `<div class="reach-warning">Ни один путь недоступен из твоей сети. Возможно нужен VPN на роутере, или выключи VPN на телефоне и проверь ещё раз.</div>`
+    : '';
+  const unknownHtml = unknown > 0
+    ? `<div class="reach-unknown-note">${unknown} не проверено (IPv6 или ошибка)</div>`
+    : '';
+
+  el.innerHTML = `
+    <div class="reach-aggregate">
+      <div class="reach-numbers">
+        <span class="${bigClass}">${reachable}</span>
+        <span class="reach-small">из ${total}</span>
+      </div>
+      <div class="reach-label">путей доступны из твоей сети</div>
+      ${unknownHtml}
+      ${warningHtml}
+      <div class="reach-meta">
+        <span>Проверено в ${when}</span>
+        <button class="reach-refresh-btn" onclick="runFullCheck(true)">Обновить</button>
+      </div>
+    </div>
+  `;
+}
+
+function toggleReachableFilter() {
+  filterReachable = !filterReachable;
+  renderAll();
+}
+
 // --- Переключение статуса ---
 
 function toggleStatus(el) {
@@ -478,6 +701,20 @@ async function init() {
 
   document.getElementById('change-user').onclick = showUserPicker;
   document.getElementById('help-btn').onclick = showHelp;
+  document.getElementById('check-all-btn').onclick = () => runFullCheck(false);
+
+  // Help-модалку разрешаем закрывать по клику на overlay (UX-фикс из Phase 4 feedback).
+  // User-picker и VPN-модалку по overlay НЕ закрываем — они требуют осознанного подтверждения.
+  bindOverlayClose('help-modal');
+
+  // v1.0.6: восстанавливаем недавние результаты проверки доступа
+  loadReachabilityCache();
+
+  // Если кэш уже есть — сразу меняем текст кнопки на «Проверить ещё раз»
+  if (reachabilityResults) {
+    const btn = document.getElementById('check-all-btn');
+    btn.innerHTML = '<span class="check-all-icon">⚡</span><span class="check-all-text">Проверить ещё раз</span>';
+  }
 
   try {
     const resp = await fetch('data.json');

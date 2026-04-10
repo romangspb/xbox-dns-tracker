@@ -54,6 +54,16 @@
           <p><strong>xsts IP</strong> — IP для подмены на роутере (продвинутый способ, нужна админка роутера).</p>
         </div>
         <div class="help-section">
+          <h3>Проверка доступа (большая кнопка)</h3>
+          <p>Кнопка <strong>«Проверить мой доступ к Xbox»</strong> сверху страницы — одним нажатием проверяет, какие из всех путей обхода доступны именно из твоей сети.</p>
+          <p>Результат показывает сколько путей работают, и ставит метки на карточки:</p>
+          <p><span class="reach-mark reach-ok">✓</span> — <strong>вероятно сработает</strong> (путь доступен из твоей сети). Попробуй на Xbox.</p>
+          <p><span class="reach-mark reach-fail">✗</span> — <strong>точно не сработает</strong> (путь недоступен из твоей сети). Не трать время.</p>
+          <p><span class="reach-mark reach-unknown">?</span> — <strong>не хватило данных</strong> (IPv6 или ошибка проверки).</p>
+          <p><strong>Важно:</strong> выключи VPN на время проверки — иначе результаты будут неверными.</p>
+        </div>
+
+        <div class="help-section">
           <h3>Проверить с моего устройства (xsts)</h3>
           <p>На карточках xsts IP есть кнопка <strong>«Проверить с моего устройства»</strong>. Она проверит, доступен ли прокси именно из твоей сети — если твой провайдер блокирует IP, серверная проверка этого не увидит, а эта увидит.</p>
         </div>
@@ -63,7 +73,7 @@
           <p>После отправки DNS появится в очереди на проверку. Если он рабочий — добавится на сайт при следующем обновлении. Нужен GitHub-аккаунт.</p>
         </div>
       </div>
-      <button class="modal-close" onclick="document.getElementById('help-modal').classList.remove('active')">Понятно</button>
+      <button class="modal-close" onclick="closeModal('help-modal')">Понятно</button>
     </div>
   </div>
 
@@ -71,6 +81,28 @@
   <div class="status-popup" id="status-popup">
     <div class="status-popup-content" id="status-popup-content"></div>
   </div>
+
+  <!-- Модалка с предупреждением про VPN перед первой проверкой -->
+  <div class="modal-overlay" id="vpn-modal">
+    <div class="modal modal-vpn">
+      <h2>Выключи VPN</h2>
+      <div class="vpn-content">
+        <p>Сейчас мы проверим из <strong>твоей реальной сети</strong>, какие способы обхода Xbox работают.</p>
+        <p>Если у тебя <strong>включён VPN</strong>, проверка пойдёт через него, а не через твоего провайдера. Результаты будут неверные: VPN-туннель часто не видит российские прокси, хотя Xbox через обычный интернет их видит.</p>
+        <p><strong>Важно:</strong> Xbox всё равно не умеет использовать system-wide VPN телефона — на консоль пойдёт прямое соединение через твой Wi-Fi/4G. Так что выключи VPN на телефоне <strong>только на время проверки</strong>.</p>
+      </div>
+      <button class="modal-close" onclick="acknowledgeVpn()">VPN выключил, проверить</button>
+    </div>
+  </div>
+
+  <!-- Секция большой проверки доступа -->
+  <section id="reachability-section">
+    <button id="check-all-btn" class="check-all-btn">
+      <span class="check-all-icon">⚡</span>
+      <span class="check-all-text">Проверить мой доступ к Xbox</span>
+    </button>
+    <div id="reachability-result"></div>
+  </section>
 
   <div id="filters"></div>
 
