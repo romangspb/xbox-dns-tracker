@@ -1,0 +1,307 @@
+:root {
+  --bg: #121212;
+  --surface: #1E1E1E;
+  --text: #E0E0E0;
+  --text-secondary: #9E9E9E;
+  --accent: #6CB4EE;
+  --success: #4CAF50;
+  --danger: #EF5350;
+  --warning: #FFA726;
+  --neutral: #757575;
+  --easy: #4CAF50;
+  --medium: #FFA726;
+  --hard: #EF5350;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.5;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+           env(safe-area-inset-bottom) env(safe-area-inset-left);
+  min-height: 100vh;
+}
+
+/* Header */
+header {
+  padding: 20px 16px 12px;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+/* Main */
+main {
+  padding: 0 12px 100px;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-secondary);
+}
+
+/* Секции по сложности */
+.difficulty-section {
+  margin-bottom: 20px;
+}
+
+.difficulty-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 4px;
+  margin-bottom: 8px;
+}
+
+.difficulty-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.difficulty-badge.easy { background: var(--easy); color: #000; }
+.difficulty-badge.medium { background: var(--medium); color: #000; }
+.difficulty-badge.hard { background: var(--hard); color: #fff; }
+
+.difficulty-count {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* DNS-карточка */
+.dns-card {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 8px;
+  border-left: 3px solid var(--neutral);
+}
+
+.dns-card.easy { border-left-color: var(--easy); }
+.dns-card.medium { border-left-color: var(--medium); }
+.dns-card.hard { border-left-color: var(--hard); }
+
+.dns-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.dns-type {
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.dns-status {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.dns-status.working { background: rgba(76, 175, 80, 0.2); color: var(--success); }
+.dns-status.not_working { background: rgba(239, 83, 80, 0.2); color: var(--danger); }
+.dns-status.unsafe { background: rgba(255, 167, 38, 0.2); color: var(--warning); }
+.dns-status.timeout { background: rgba(117, 117, 117, 0.2); color: var(--neutral); }
+.dns-status.error { background: rgba(117, 117, 117, 0.2); color: var(--neutral); }
+.dns-status.unchecked { background: rgba(117, 117, 117, 0.2); color: var(--neutral); }
+
+/* IP-блок для копирования */
+.dns-ip-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.dns-ip {
+  font-family: 'SF Mono', 'Menlo', monospace;
+  font-size: 15px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 8px 12px;
+  border-radius: 8px;
+  flex: 1;
+  cursor: pointer;
+  transition: background 0.15s;
+  -webkit-user-select: all;
+  user-select: all;
+}
+
+.dns-ip:active {
+  background: rgba(108, 180, 238, 0.15);
+}
+
+.dns-ip.copied {
+  background: rgba(76, 175, 80, 0.15);
+  color: var(--success);
+}
+
+.dns-label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  min-width: 24px;
+}
+
+/* Источники */
+.dns-sources {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 6px;
+}
+
+/* Статус-трекер пользователей */
+.user-statuses {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.user-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 2px solid var(--neutral);
+  background: transparent;
+  color: var(--text-secondary);
+  transition: all 0.15s;
+}
+
+.user-circle.works {
+  border-color: var(--success);
+  color: var(--success);
+}
+
+.user-circle.not-works {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.user-circle.current {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.status-summary {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-left: auto;
+}
+
+/* Модальное окно */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  max-width: 320px;
+  width: 90%;
+}
+
+.modal h2 {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.user-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.user-picker button {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.user-picker button:active {
+  background: rgba(108, 180, 238, 0.2);
+}
+
+/* Footer */
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  text-align: center;
+}
+
+.footer-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.footer-link {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: inherit;
+}
+
+.separator {
+  color: var(--neutral);
+  font-size: 14px;
+}
+
+.disclaimer {
+  font-size: 11px;
+  color: var(--neutral);
+}

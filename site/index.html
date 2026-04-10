@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Xbox DNS Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Xbox DNS Tracker</h1>
+    <p class="subtitle" id="updated-at">Загрузка...</p>
+  </header>
+
+  <!-- Модальное окно выбора пользователя -->
+  <div class="modal-overlay" id="user-modal">
+    <div class="modal">
+      <h2>Кто ты?</h2>
+      <div class="user-picker" id="user-picker"></div>
+    </div>
+  </div>
+
+  <main id="methods-container">
+    <div class="loading">Загрузка данных...</div>
+  </main>
+
+  <footer>
+    <div class="footer-actions">
+      <a href="https://github.com/romangspb/xbox-dns-tracker/actions" target="_blank" class="footer-link">Обновить данные</a>
+      <span class="separator">|</span>
+      <button class="footer-link" id="change-user">Сменить пользователя</button>
+    </div>
+    <p class="disclaimer">DNS из открытых источников. Используйте на свой риск.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
