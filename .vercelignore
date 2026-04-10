@@ -1,0 +1,33 @@
+# Что НЕ деплоить на Vercel.
+# Проект содержит Python-часть (парсер + чекер, запускается в GitHub Actions)
+# и веб-часть (статика site/ + Vercel function api/). Vercel деплоит только
+# web-часть; Python-код исключаем, чтобы Vercel не пытался его собрать.
+
+# Python
+src/
+tests/
+requirements.txt
+pyproject.toml
+*.py
+*.pyc
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+
+# GitHub Actions
+.github/
+
+# Документация и внутренние файлы
+plans/
+specs/
+thoughts/
+.business/
+.claude/
+CLAUDE.md
+
+# Данные парсера (для Vercel берём только site/data.json)
+data/
+
+# Секреты и конфиги
+.env*
