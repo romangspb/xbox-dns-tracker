@@ -10,7 +10,10 @@
 </head>
 <body>
   <header>
-    <h1>Xbox DNS Tracker</h1>
+    <div class="header-row">
+      <h1>Xbox DNS Tracker</h1>
+      <button class="help-btn" id="help-btn" aria-label="Помощь">?</button>
+    </div>
     <p class="subtitle" id="updated-at">Загрузка...</p>
   </header>
 
@@ -20,6 +23,42 @@
       <h2>Кто ты?</h2>
       <div class="user-picker" id="user-picker"></div>
     </div>
+  </div>
+
+  <!-- Модальное окно помощи -->
+  <div class="modal-overlay" id="help-modal">
+    <div class="modal modal-help">
+      <h2>Как пользоваться</h2>
+      <div class="help-content">
+        <div class="help-section">
+          <h3>Выбор DNS</h3>
+          <p>Нажми на IP-адрес — он скопируется. Открой <strong>Настройки Xbox → Сеть → Дополнительные → DNS (вручную)</strong> и вставь.</p>
+        </div>
+        <div class="help-section">
+          <h3>Статусы проверки</h3>
+          <p><span class="dns-status working">Работает</span> — DNS обходит блокировку Xbox</p>
+          <p><span class="dns-status unsafe">Небезопасен</span> — обходит, но подменяет обычные сайты</p>
+          <p><span class="dns-status timeout">Не отвечает</span> — сервер не ответил (может быть недоступен из вашего региона)</p>
+          <p><span class="dns-status not_working">Не обходит</span> — DNS не помогает</p>
+        </div>
+        <div class="help-section">
+          <h3>Кружки пользователей</h3>
+          <p>Нажми на <strong>свой</strong> кружок под DNS чтобы отметить: работает (зелёный), не работает (красный), не пробовал (серый).</p>
+        </div>
+        <div class="help-section">
+          <h3>Категории</h3>
+          <p><strong>DNS IPv4</strong> — обычные DNS, прописываются в Xbox</p>
+          <p><strong>DNS IPv6</strong> — для сетей с IPv6</p>
+          <p><strong>xsts IP</strong> — IP для подмены на роутере (продвинутый способ)</p>
+        </div>
+      </div>
+      <button class="modal-close" onclick="document.getElementById('help-modal').classList.remove('active')">Понятно</button>
+    </div>
+  </div>
+
+  <!-- Popup пояснения статуса -->
+  <div class="status-popup" id="status-popup">
+    <div class="status-popup-content" id="status-popup-content"></div>
   </div>
 
   <div id="filters"></div>

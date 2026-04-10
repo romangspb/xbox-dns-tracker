@@ -34,12 +34,46 @@ body {
 /* Header */
 header {
   padding: 20px 16px 8px;
-  text-align: center;
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
 }
 
 header h1 {
   font-size: 22px;
   font-weight: 700;
+}
+
+.help-btn {
+  position: absolute;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.help-btn:active {
+  background: rgba(108, 180, 238, 0.15);
+  color: var(--accent);
+}
+
+.subtitle {
+  text-align: center;
 }
 
 .subtitle {
@@ -426,4 +460,92 @@ footer {
 .disclaimer {
   font-size: 11px;
   color: var(--neutral);
+}
+
+/* Модальное окно помощи */
+.modal-help {
+  max-width: 360px;
+  text-align: left;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-help h2 {
+  text-align: center;
+}
+
+.help-content {
+  margin-bottom: 16px;
+}
+
+.help-section {
+  margin-bottom: 14px;
+}
+
+.help-section h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.help-section p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 4px;
+}
+
+.help-section .dns-status {
+  font-size: 11px;
+  vertical-align: middle;
+}
+
+.modal-close {
+  width: 100%;
+  background: rgba(108, 180, 238, 0.15);
+  color: var(--accent);
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 16px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.modal-close:active {
+  background: rgba(108, 180, 238, 0.25);
+}
+
+/* Popup пояснения статуса */
+.status-popup {
+  display: none;
+  position: fixed;
+  z-index: 50;
+  max-width: 260px;
+}
+
+.status-popup.active {
+  display: block;
+}
+
+.status-popup-content {
+  background: var(--surface);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.status-popup-content strong {
+  color: var(--text);
+}
+
+/* Кликабельный статус */
+.dns-status {
+  cursor: pointer;
 }

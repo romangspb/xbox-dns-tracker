@@ -13,12 +13,12 @@ const CHECK_STATUS_LABELS = {
 };
 
 const CHECK_STATUS_HINTS = {
-  working: 'DNS обходит блокировку Xbox',
-  not_working: 'DNS не обходит блокировку — стандартный резолв',
-  unsafe: 'DNS подменяет обычные сайты — может быть опасен',
-  timeout: 'DNS-сервер не ответил за 5 секунд',
-  error: 'Ошибка при проверке',
-  unchecked: 'Ещё не проверялся',
+  working: 'DNS обходит блокировку Xbox. Проверено автоматически через резолв xsts.auth.xboxlive.com.',
+  not_working: 'DNS не обходит блокировку — возвращает стандартный IP Microsoft Azure.',
+  unsafe: 'DNS обходит блокировку, но подменяет обычные сайты (google.com). Может перехватывать трафик.',
+  timeout: 'DNS-сервер не ответил за 5 секунд. Может быть недоступен из вашего региона или не работает.',
+  error: 'Произошла ошибка при проверке DNS-сервера.',
+  unchecked: 'DNS ещё не проходил автоматическую проверку.',
 };
 
 const DIFFICULTY_LABELS = {
@@ -30,8 +30,8 @@ const DIFFICULTY_LABELS = {
 const DIFFICULTY_ORDER = ['easy', 'medium', 'hard'];
 
 // Фильтры
-let filterType = 'dns';       // 'dns' | 'xsts'
-let filterStatus = 'all';     // 'all' | 'working' | 'timeout' | ...
+let filterType = 'dns_v4';            // 'dns_v4' | 'dns_v6' | 'xsts'
+let filterStatuses = new Set(['all']); // мульти-выбор: Set of statuses или 'all'
 
 // --- Хранилище ---
 
@@ -58,7 +58,18 @@ function setUserStatus(methodId, userName, status) {
   localStorage.setItem('xbox_statuses', JSON.stringify(all));
 }
 
-// --- Модальное окно ---
+// --- Определение IPv4/IPv6 ---
+
+function isIPv6(ip) {
+  return ip && ip.includes(':');
+}
+
+function getMethodIPVersion(method) {
+  if (method.type !== 'dns_pair') return null;
+  return isIPv6(method.primary_dns) ? 'v6' : 'v4';
+}
+
+// --- Модальные окна ---
 
 function showUserPicker() {
   const modal = document.getElementById('user-modal');
@@ -75,6 +86,34 @@ function showUserPicker() {
     picker.appendChild(btn);
   });
   modal.classList.add('active');
+}
+
+function showHelp() {
+  document.getElementById('help-modal').classList.add('active');
+}
+
+function showStatusPopup(status, el) {
+  const popup = document.getElementById('status-popup');
+  const content = document.getElementById('status-popup-content');
+  const hint = CHECK_STATUS_HINTS[status] || '';
+  const label = CHECK_STATUS_LABELS[status] || status;
+
+  content.innerHTML = `<strong>${label}</strong><br>${hint}`;
+
+  // Позиционирование около элемента
+  const rect = el.getBoundingClientRect();
+  popup.style.top = (rect.bottom + 8) + 'px';
+  popup.style.left = Math.max(12, Math.min(rect.left, window.innerWidth - 280)) + 'px';
+  popup.classList.add('active');
+
+  // Скрыть по тапу куда угодно
+  setTimeout(() => {
+    document.addEventListener('click', hideStatusPopup, { once: true });
+  }, 10);
+}
+
+function hideStatusPopup() {
+  document.getElementById('status-popup').classList.remove('active');
 }
 
 // --- Копирование DNS ---
@@ -97,9 +136,26 @@ function copyDNS(text, el) {
 
 // --- Фильтры ---
 
-function setFilter(type, status) {
-  if (type !== undefined) filterType = type;
-  if (status !== undefined) filterStatus = status;
+function setTypeFilter(type) {
+  filterType = type;
+  filterStatuses = new Set(['all']);
+  renderAll();
+}
+
+function toggleStatusFilter(status) {
+  if (status === 'all') {
+    filterStatuses = new Set(['all']);
+  } else {
+    filterStatuses.delete('all');
+    if (filterStatuses.has(status)) {
+      filterStatuses.delete(status);
+    } else {
+      filterStatuses.add(status);
+    }
+    if (filterStatuses.size === 0) {
+      filterStatuses = new Set(['all']);
+    }
+  }
   renderAll();
 }
 
@@ -107,14 +163,21 @@ function renderFilters() {
   const container = document.getElementById('filters');
   if (!appData) return;
 
-  // Считаем количество по типам
   const methods = appData.methods.filter(m => m.active !== false);
-  const dnsCount = methods.filter(m => m.type === 'dns_pair').length;
+  const dnsV4 = methods.filter(m => m.type === 'dns_pair' && !isIPv6(m.primary_dns)).length;
+  const dnsV6 = methods.filter(m => m.type === 'dns_pair' && isIPv6(m.primary_dns)).length;
   const xstsCount = methods.filter(m => m.type === 'xsts_ip').length;
 
-  // Считаем количество по статусам для текущего типа
-  const currentType = filterType === 'dns' ? 'dns_pair' : 'xsts_ip';
-  const typed = methods.filter(m => m.type === currentType);
+  // Методы текущего типа для подсчёта статусов
+  let typed;
+  if (filterType === 'dns_v4') {
+    typed = methods.filter(m => m.type === 'dns_pair' && !isIPv6(m.primary_dns));
+  } else if (filterType === 'dns_v6') {
+    typed = methods.filter(m => m.type === 'dns_pair' && isIPv6(m.primary_dns));
+  } else {
+    typed = methods.filter(m => m.type === 'xsts_ip');
+  }
+
   const statusCounts = {};
   typed.forEach(m => {
     const s = m.dns_check?.status || 'unchecked';
@@ -122,39 +185,49 @@ function renderFilters() {
   });
 
   // Фильтр по типу
-  const typeFilters = `
+  let typeHtml = `
     <div class="filter-group">
-      <button class="filter-btn ${filterType === 'dns' ? 'active' : ''}" onclick="setFilter('dns')">
-        DNS для Xbox <span class="filter-count">${dnsCount}</span>
+      <button class="filter-btn ${filterType === 'dns_v4' ? 'active' : ''}" onclick="setTypeFilter('dns_v4')">
+        DNS IPv4 <span class="filter-count">${dnsV4}</span>
+      </button>`;
+
+  if (dnsV6 > 0) {
+    typeHtml += `
+      <button class="filter-btn ${filterType === 'dns_v6' ? 'active' : ''}" onclick="setTypeFilter('dns_v6')">
+        DNS IPv6 <span class="filter-count">${dnsV6}</span>
+      </button>`;
+  }
+
+  typeHtml += `
+      <button class="filter-btn ${filterType === 'xsts' ? 'active' : ''}" onclick="setTypeFilter('xsts')">
+        xsts IP <span class="filter-count">${xstsCount}</span>
       </button>
-      <button class="filter-btn ${filterType === 'xsts' ? 'active' : ''}" onclick="setFilter('xsts')">
-        xsts IP для роутера <span class="filter-count">${xstsCount}</span>
-      </button>
-    </div>
-  `;
+    </div>`;
 
-  // Фильтр по статусу
-  const statusOptions = [
-    { key: 'all', label: 'Все' },
-    { key: 'working', label: 'Работает' },
-    { key: 'timeout', label: 'Не отвечает' },
-    { key: 'unsafe', label: 'Небезопасен' },
-    { key: 'not_working', label: 'Не обходит' },
-    { key: 'unchecked', label: 'Не проверен' },
-  ];
+  // Фильтр по статусу (не для xsts)
+  let statusHtml = '';
+  if (filterType !== 'xsts') {
+    const statusOptions = [
+      { key: 'all', label: 'Все' },
+      { key: 'working', label: 'Работает' },
+      { key: 'timeout', label: 'Не отвечает' },
+      { key: 'unsafe', label: 'Небезопасен' },
+      { key: 'not_working', label: 'Не обходит' },
+      { key: 'unchecked', label: 'Не проверен' },
+    ];
 
-  const allCount = typed.length;
-  const statusFilters = statusOptions
-    .filter(o => o.key === 'all' || statusCounts[o.key])
-    .map(o => {
-      const cnt = o.key === 'all' ? allCount : (statusCounts[o.key] || 0);
-      return `<button class="status-filter-btn ${filterStatus === o.key ? 'active' : ''}" onclick="setFilter(undefined, '${o.key}')">${o.label} <span class="filter-count">${cnt}</span></button>`;
-    }).join('');
+    const statusBtns = statusOptions
+      .filter(o => o.key === 'all' || statusCounts[o.key])
+      .map(o => {
+        const cnt = o.key === 'all' ? typed.length : (statusCounts[o.key] || 0);
+        const active = filterStatuses.has(o.key) ? ' active' : '';
+        return `<button class="status-filter-btn${active}" onclick="toggleStatusFilter('${o.key}')">${o.label} <span class="filter-count">${cnt}</span></button>`;
+      }).join('');
 
-  container.innerHTML = `
-    ${typeFilters}
-    <div class="status-filters">${statusFilters}</div>
-  `;
+    statusHtml = `<div class="status-filters">${statusBtns}</div>`;
+  }
+
+  container.innerHTML = typeHtml + statusHtml;
 }
 
 // --- Рендер ---
@@ -173,19 +246,24 @@ function renderAll() {
     day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
   });
 
-  // Фильтры
   renderFilters();
 
-  // Фильтрация по типу
-  const targetType = filterType === 'dns' ? 'dns_pair' : 'xsts_ip';
-  let methods = appData.methods.filter(m => m.active !== false && m.type === targetType);
-
-  // Фильтрация по статусу
-  if (filterStatus !== 'all') {
-    methods = methods.filter(m => (m.dns_check?.status || 'unchecked') === filterStatus);
+  // Фильтрация
+  let methods;
+  if (filterType === 'dns_v4') {
+    methods = appData.methods.filter(m => m.active !== false && m.type === 'dns_pair' && !isIPv6(m.primary_dns));
+  } else if (filterType === 'dns_v6') {
+    methods = appData.methods.filter(m => m.active !== false && m.type === 'dns_pair' && isIPv6(m.primary_dns));
+  } else {
+    methods = appData.methods.filter(m => m.active !== false && m.type === 'xsts_ip');
   }
 
-  // Сортировка: working первыми, потом по количеству источников
+  // Фильтр по статусу (не для xsts)
+  if (filterType !== 'xsts' && !filterStatuses.has('all')) {
+    methods = methods.filter(m => filterStatuses.has(m.dns_check?.status || 'unchecked'));
+  }
+
+  // Сортировка
   methods.sort((a, b) => {
     const aW = a.dns_check?.status === 'working' ? 0 : 1;
     const bW = b.dns_check?.status === 'working' ? 0 : 1;
@@ -201,20 +279,19 @@ function renderAll() {
   }
 
   // Инструкция
-  if (filterType === 'dns') {
-    const hint = document.createElement('div');
-    hint.className = 'instruction';
+  const hint = document.createElement('div');
+  hint.className = 'instruction';
+  if (filterType === 'dns_v4') {
     hint.innerHTML = 'Нажми на IP чтобы скопировать → <strong>Настройки Xbox</strong> → Сеть → Дополнительные → DNS (вручную)';
-    container.appendChild(hint);
+  } else if (filterType === 'dns_v6') {
+    hint.innerHTML = 'IPv6 DNS → <strong>Настройки Xbox</strong> → Сеть → Дополнительные → DNS (вручную) → IPv6';
   } else {
-    const hint = document.createElement('div');
-    hint.className = 'instruction';
-    hint.innerHTML = 'IP для подмены <strong>xsts.auth.xboxlive.com</strong> на роутере (static DNS record)';
-    container.appendChild(hint);
+    hint.innerHTML = 'IP для подмены <strong>xsts.auth.xboxlive.com</strong> на роутере. Статус проверки не применим — это целевые IP, а не DNS-серверы.';
   }
+  container.appendChild(hint);
 
-  // Группировка по сложности (только для dns)
-  if (filterType === 'dns') {
+  // Группировка по сложности (для dns), плоский список для xsts
+  if (filterType !== 'xsts') {
     const grouped = {};
     DIFFICULTY_ORDER.forEach(d => grouped[d] = []);
     methods.forEach(m => {
@@ -239,7 +316,6 @@ function renderAll() {
       container.appendChild(section);
     });
   } else {
-    // xsts — плоский список
     methods.forEach(m => container.appendChild(renderCard(m, user)));
   }
 }
@@ -249,11 +325,17 @@ function renderCard(method, currentUser) {
   const diff = method.difficulty || 'easy';
   card.className = `dns-card ${diff}`;
 
+  const isXsts = method.type === 'xsts_ip';
   const checkStatus = method.dns_check?.status || 'unchecked';
   const statusLabel = CHECK_STATUS_LABELS[checkStatus] || checkStatus;
-  const statusHint = CHECK_STATUS_HINTS[checkStatus] || '';
   const sourceCount = method.sources?.length || 0;
-  const isRecommended = checkStatus === 'working' && sourceCount >= 2;
+  const isRecommended = !isXsts && checkStatus === 'working' && sourceCount >= 2;
+
+  // Статус-бейдж (кликабельный, не для xsts)
+  let statusHtml = '';
+  if (!isXsts) {
+    statusHtml = `<span class="dns-status ${checkStatus}" onclick="showStatusPopup('${checkStatus}', this)">${statusLabel}</span>`;
+  }
 
   let ipHtml = '';
   if (method.primary_dns) {
@@ -286,7 +368,7 @@ function renderCard(method, currentUser) {
     if (st === 'works') worksCount++;
     const isCurrent = name === currentUser ? ' current' : '';
     const initial = name.substring(0, 2).toUpperCase();
-    return `<div class="user-circle ${st}${isCurrent}" data-method="${method.id}" data-user="${name}" onclick="toggleStatus(this)" title="${name}: нажми чтобы отметить">${initial}</div>`;
+    return `<div class="user-circle ${st}${isCurrent}" data-method="${method.id}" data-user="${name}" onclick="toggleStatus(this)" title="${name}">${initial}</div>`;
   }).join('');
 
   const summaryText = worksCount > 0 ? `${worksCount}/${USERS.length}` : '';
@@ -295,7 +377,7 @@ function renderCard(method, currentUser) {
   card.innerHTML = `
     <div class="dns-card-header">
       ${recommendedBadge}
-      <span class="dns-status ${checkStatus}" title="${statusHint}">${statusLabel}</span>
+      ${statusHtml}
     </div>
     ${ipHtml}
     <div class="dns-meta">
@@ -336,9 +418,11 @@ async function init() {
   }
 
   document.getElementById('change-user').onclick = showUserPicker;
+  document.getElementById('help-btn').onclick = showHelp;
 
+  // Cache busting: добавляем timestamp к запросу data.json
   try {
-    const resp = await fetch('data.json');
+    const resp = await fetch('data.json?t=' + Date.now());
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     appData = await resp.json();
     renderAll();
