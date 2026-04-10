@@ -81,6 +81,20 @@ def generate_method_id(method_type: str, primary: str | None, secondary: str | N
     return f"{method_type[:3]}-{short_hash}"
 
 
+def _is_garbage_ip(ip: str) -> bool:
+    """IP которые не должны быть primary DNS (private, loopback, reserved)."""
+    if not ip:
+        return True
+    return (
+        ip == "0.0.0.0"
+        or ip.startswith("127.")
+        or ip.startswith("192.168.")
+        or ip.startswith("10.")
+        or ip.startswith("172.16.") or ip.startswith("172.17.") or ip.startswith("172.18.")
+        or ip.startswith("172.19.") or ip.startswith("172.2") or ip.startswith("172.3")
+    )
+
+
 def _has_real_secondary(m: Method) -> bool:
     """Проверяет, есть ли реальный secondary DNS (не None и не 0.0.0.0)."""
     sec = m.get("secondary_dns")
@@ -88,7 +102,10 @@ def _has_real_secondary(m: Method) -> bool:
 
 
 def deduplicate_methods(methods: list[Method]) -> list[Method]:
-    """Дедупликация методов: сначала по ID, потом по primary_dns для dns_pair."""
+    """Дедупликация методов: фильтр мусора, по ID, потом по primary_dns для dns_pair."""
+    # Шаг 0: убрать мусорные IP (private, loopback)
+    methods = [m for m in methods if not _is_garbage_ip(m.get("primary_dns", ""))]
+
     # Шаг 1: дедупликация по ID (объединяем sources)
     seen: dict[str, Method] = {}
     for m in methods:

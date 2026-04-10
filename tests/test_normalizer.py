@@ -119,16 +119,16 @@ class TestGenerateMethodId:
 class TestDeduplicateMethods:
     def test_no_duplicates(self):
         methods = [
-            {"id": "dns-aaa", "sources": ["src-1"], "source_urls": ["url1"], "last_seen": "2026-04-10"},
-            {"id": "dns-bbb", "sources": ["src-2"], "source_urls": ["url2"], "last_seen": "2026-04-10"},
+            {"id": "dns-aaa", "primary_dns": "8.8.8.8", "sources": ["src-1"], "source_urls": ["url1"], "last_seen": "2026-04-10"},
+            {"id": "dns-bbb", "primary_dns": "1.1.1.1", "sources": ["src-2"], "source_urls": ["url2"], "last_seen": "2026-04-10"},
         ]
         result = deduplicate_methods(methods)
         assert len(result) == 2
 
     def test_merge_duplicates(self):
         methods = [
-            {"id": "dns-aaa", "sources": ["src-1"], "source_urls": ["url1"], "last_seen": "2026-04-08"},
-            {"id": "dns-aaa", "sources": ["src-2"], "source_urls": ["url2"], "last_seen": "2026-04-10"},
+            {"id": "dns-aaa", "primary_dns": "8.8.8.8", "sources": ["src-1"], "source_urls": ["url1"], "last_seen": "2026-04-08"},
+            {"id": "dns-aaa", "primary_dns": "8.8.8.8", "sources": ["src-2"], "source_urls": ["url2"], "last_seen": "2026-04-10"},
         ]
         result = deduplicate_methods(methods)
         assert len(result) == 1
@@ -138,12 +138,22 @@ class TestDeduplicateMethods:
 
     def test_no_duplicate_sources(self):
         methods = [
-            {"id": "dns-aaa", "sources": ["src-1"], "source_urls": ["url1"], "last_seen": "2026-04-10"},
-            {"id": "dns-aaa", "sources": ["src-1"], "source_urls": ["url1"], "last_seen": "2026-04-10"},
+            {"id": "dns-aaa", "primary_dns": "8.8.8.8", "sources": ["src-1"], "source_urls": ["url1"], "last_seen": "2026-04-10"},
+            {"id": "dns-aaa", "primary_dns": "8.8.8.8", "sources": ["src-1"], "source_urls": ["url1"], "last_seen": "2026-04-10"},
         ]
         result = deduplicate_methods(methods)
         assert len(result) == 1
         assert result[0]["sources"].count("src-1") == 1
+
+    def test_garbage_ips_filtered(self):
+        methods = [
+            {"id": "dns-a", "primary_dns": "192.168.1.1", "sources": ["src-1"], "source_urls": [], "last_seen": "2026-04-10"},
+            {"id": "dns-b", "primary_dns": "0.0.0.0", "sources": ["src-1"], "source_urls": [], "last_seen": "2026-04-10"},
+            {"id": "dns-c", "primary_dns": "176.99.11.77", "sources": ["src-1"], "source_urls": [], "last_seen": "2026-04-10"},
+        ]
+        result = deduplicate_methods(methods)
+        assert len(result) == 1
+        assert result[0]["primary_dns"] == "176.99.11.77"
 
     def test_empty_list(self):
         assert deduplicate_methods([]) == []

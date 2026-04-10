@@ -10,7 +10,7 @@ from pathlib import Path
 
 from src.models import SOURCES_CONFIG, DataFile, Source
 from src.normalizer import deduplicate_methods
-from src.parsers import telegram, github_readme, xbox_dns_ru, xbox_news_ru, github_skorches, teletype_faqi, sport24
+from src.parsers import telegram, github_readme, xbox_dns_ru, xbox_news_ru, github_skorches, teletype_faqi, sport24, xboxstor
 
 logging.basicConfig(
     level=logging.INFO,
@@ -32,6 +32,7 @@ PARSERS = {
     "src-skorches": github_skorches.parse,
     "src-teletype-faqi": teletype_faqi.parse,
     "src-sport24": sport24.parse,
+    "src-xboxstor": xboxstor.parse,
 }
 
 

@@ -90,4 +90,10 @@ SOURCES_CONFIG: list[Source] = [
         "type": "website",
         "url": "https://sport24.ru/cybersport/article-kak-oboyti-oshibku-regiona-na-xbox",
     },
+    {
+        "id": "src-xboxstor",
+        "name": "xboxstor.ru",
+        "type": "website",
+        "url": "https://xboxstor.ru/news-xbox/novoe-reshenie-oshibki-0x80a40401-dlya-konsoli-xbox-821",
+    },
 ]
