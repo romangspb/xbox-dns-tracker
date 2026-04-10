@@ -3,10 +3,18 @@
   "framework": null,
   "buildCommand": null,
   "installCommand": null,
-  "outputDirectory": null,
+  "outputDirectory": "site",
   "functions": {
     "api/resolve.mjs": {
       "maxDuration": 10
     }
-  }
+  },
+  "headers": [
+    {
+      "source": "/data.json",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=60, must-revalidate" }
+      ]
+    }
+  ]
 }

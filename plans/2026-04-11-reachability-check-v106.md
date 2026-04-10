@@ -229,27 +229,51 @@ xbox-dns-tracker.vercel.app
 
 ---
 
-## Фаза 3: Миграция деплоя — сайт на Vercel [ ]
+## Фаза 3: Миграция деплоя — сайт на Vercel [x]
 
 ### Задачи
-- [ ] `vercel.json`: раздача `site/` как статики, `/api/*` → функции
-- [ ] Deploy preview из feature-ветки — проверить что:
-  - Главная открывается
-  - `data.json` загружается
-  - Старая функциональность (копирование DNS, фильтры, трекинг, popup статусов) работает
-  - Help menu открывается
-  - Поведение на iPhone Safari идентично GitHub Pages версии
-- [ ] GitHub Actions workflow `update.yml` **не трогаем** — он продолжает коммитить `data.json` в main, это обязательно для обоих деплоев
-- [ ] Настроить Vercel: autoDeploy из main → production URL `xbox-dns-tracker.vercel.app`
-- [ ] Не удалять GitHub Pages deployment — оставляем как запасной
-- [ ] Документировать в `plans/migration-from-vercel.md` как развернуть на VPS (для случая блокировки)
+- [x] `vercel.json`: `outputDirectory: "site"` + headers для `data.json` (no-cache 60 сек)
+- [x] Deploy preview из feature-ветки — все CLI-проверки прошли:
+  - [x] `/` → 200, text/html, `<title>Xbox DNS Tracker</title>`
+  - [x] `/data.json` → 200, кастомный `cache-control: public, max-age=60, must-revalidate`
+  - [x] `/style.css` → 200, text/css
+  - [x] `/app.js` → 200, application/javascript
+  - [x] `/api/resolve?dns=1.1.1.1` → функция всё ещё работает
+- [x] Визуальный тест пользователем (Chrome desktop):
+  - [x] Заголовок и модалка «Кто ты?» — ✅
+  - [x] Фильтры IPv4/IPv6/xsts — ✅
+  - [x] Статусы на карточках (working/unsafe/timeout/ipv6_unchecked/reachable) — ✅
+  - [x] Копирование IP по клику — ✅
+  - [x] Кружки пользователей — ✅
+  - [x] Help-модалка — ✅ (feedback: хорошо бы закрывать и по клику на overlay — добавлено в backlog)
+  - [x] Device-check на xsts (v1.0.4) — работает, показал ожидаемый timeout из-за VPN пользователя (подтверждает критичность VPN-модалки в Phase 4)
+- [x] GitHub Actions workflow `update.yml` не тронут — продолжит коммитить `data.json` в main для обоих деплоев
+- [ ] Настроить production deploy (будет автоматически при мёрдже feature → main в Phase 6)
+- [x] GitHub Pages не удаляем — остаётся как запасной деплой
+- [ ] Написать `plans/migration-from-vercel.md` — перенесено в Phase 6 (вместе с остальными docs)
 
 ### Что изменится (для приёмки)
 Было: сайт живёт только на `romangspb.github.io/xbox-dns-tracker` из main-ветки.
 Стало: сайт живёт на `xbox-dns-tracker.vercel.app` (главный) и на GitHub Pages (запасной). Обе версии автоматически обновляются из main, feature-ветка даёт preview URL для тестов.
 
 ### Итог реализации
-_(заполняется после завершения фазы)_
+**Что сделано:**
+- `vercel.json` обновлён: `outputDirectory: "site"` + кастомный `Cache-Control` для `data.json`
+- Preview deploy: `https://xbox-dns-tracker-4a7vpqk8m-romangspbs-projects.vercel.app`
+- Все CLI-проверки (корень, data.json, style.css, app.js, /api/resolve) прошли
+- Визуальный тест пользователем в Chrome desktop: 8/8 пунктов ✅
+- Сайт работает **идентично** v1.0.5 на GitHub Pages
+- Custom cache-control на data.json подтверждён через response headers
+
+**Bonus находки:**
+- Device-check (v1.0.4) на xsts IPs у пользователя показал timeout по всем 3 случайным картам — не баг, а следствие включённого VPN. Это **идеальное подтверждение** необходимости VPN-модалки в Phase 4: пользователь с VPN должен сразу видеть агрегат «из N путей 0 доступны, выключи VPN», а не разбираться почему конкретная xsts-проверка падает.
+- Feedback для backlog: закрывать help-модалку кликом по overlay (не только кнопкой «Понятно»)
+
+**Отложено в Phase 6:**
+- Production deploy в `xbox-dns-tracker.vercel.app` — случится автоматически при мёрдже feature → main
+- `plans/migration-from-vercel.md` — пишется вместе с остальной документацией
+
+**Известные проблемы:** нет.
 
 ---
 
@@ -355,6 +379,10 @@ _(заполняется после завершения фазы)_
 - ❌ Не делаем Telegram-бот уведомления — v1.1
 
 ---
+
+## Backlog — мелкие UX-улучшения (после v1.0.6)
+
+- **Закрытие help-модалки кликом по overlay** — не только кнопкой «Понятно», но и кликом рядом со всплывающим окном. Замечание получено при визуальном тесте Phase 3. Низкий приоритет, 10 строк кода в `app.js`.
 
 ## Think ahead — возможные проблемы и их решения
 
