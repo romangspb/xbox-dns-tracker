@@ -96,7 +96,9 @@ function showHelp() {
   document.getElementById('help-modal').classList.add('active');
 }
 
-function showStatusPopup(status, el) {
+function showStatusPopup(status, el, e) {
+  if (e) e.stopPropagation();
+
   const popup = document.getElementById('status-popup');
   const content = document.getElementById('status-popup-content');
   const hint = CHECK_STATUS_HINTS[status] || '';
@@ -110,6 +112,8 @@ function showStatusPopup(status, el) {
   popup.style.left = Math.max(12, Math.min(rect.left, window.innerWidth - 280)) + 'px';
   popup.classList.add('active');
 
+  // Убираем старый listener если был
+  document.removeEventListener('click', hideStatusPopup);
   // Скрыть по тапу куда угодно
   setTimeout(() => {
     document.addEventListener('click', hideStatusPopup, { once: true });
@@ -342,7 +346,7 @@ function renderCard(method, currentUser) {
     || (isXsts && checkStatus === 'reachable' && sourceCount >= 2);
 
   // Статус-бейдж (кликабельный)
-  let statusHtml = `<span class="dns-status ${checkStatus}" onclick="showStatusPopup('${checkStatus}', this)">${statusLabel}</span>`;
+  let statusHtml = `<span class="dns-status ${checkStatus}" onclick="showStatusPopup('${checkStatus}', this, event)">${statusLabel}</span>`;
   }
 
   let ipHtml = '';
