@@ -262,6 +262,8 @@ main {
 .dns-status.timeout { background: rgba(117, 117, 117, 0.15); color: var(--neutral); }
 .dns-status.error { background: rgba(117, 117, 117, 0.15); color: var(--neutral); }
 .dns-status.unchecked { background: rgba(117, 117, 117, 0.15); color: var(--neutral); }
+.dns-status.reachable { background: rgba(76, 175, 80, 0.15); color: var(--success); }
+.dns-status.unreachable { background: rgba(239, 83, 80, 0.15); color: var(--danger); }
 
 /* IP-блок для копирования */
 .dns-ip-row {

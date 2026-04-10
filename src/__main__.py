@@ -140,6 +140,27 @@ def run() -> None:
         checked += 1
     log.info("Проверено DNS: %d уникальных", checked)
 
+    # Автопроверка xsts IP (v1.0.3)
+    from src.checker import check_xsts_ip
+    xsts_cache: dict[str, dict] = {}
+    xsts_checked = 0
+    for method in final_methods:
+        if method.get("type") != "xsts_ip":
+            continue
+        ip = method.get("primary_dns")
+        if not ip:
+            continue
+        if ip in xsts_cache:
+            method["dns_check"] = xsts_cache[ip]
+            continue
+        log.info("Проверка xsts IP: %s", ip)
+        result = check_xsts_ip(ip)
+        xsts_cache[ip] = result
+        method["dns_check"] = result
+        log.info("  → %s", result["status"])
+        xsts_checked += 1
+    log.info("Проверено xsts IP: %d уникальных", xsts_checked)
+
     data: DataFile = {
         "updated_at": now,
         "methods": final_methods,

@@ -1,8 +1,9 @@
-"""Автопроверка DNS: работает ли bypass и безопасен ли DNS."""
+"""Автопроверка DNS и xsts IP."""
 
 from __future__ import annotations
 
 import logging
+import socket
 from datetime import datetime, timezone
 
 import dns.resolver
@@ -101,5 +102,35 @@ def check_dns(primary_dns: str) -> dict:
         if not check_safety(primary_dns):
             result["status"] = "unsafe"
             log.warning("  UNSAFE: %s подменяет %s", primary_dns, SAFETY_DOMAIN)
+
+    return result
+
+
+def check_xsts_ip(ip: str) -> dict:
+    """Проверяет xsts IP: доступен ли прокси-сервер на порту 443.
+
+    xsts IP — это не DNS, а целевой IP для подмены xsts.auth.xboxlive.com
+    на роутере. Проверяем что сервер жив (TCP connect на 443).
+    """
+    now = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    result = {
+        "status": "unchecked",
+        "checked_at": now,
+        "resolved_ip": None,
+    }
+
+    try:
+        sock = socket.create_connection((ip, 443), timeout=TIMEOUT)
+        sock.close()
+        result["status"] = "reachable"
+        result["resolved_ip"] = ip
+    except socket.timeout:
+        result["status"] = "timeout"
+    except ConnectionRefusedError:
+        result["status"] = "unreachable"
+    except OSError:
+        result["status"] = "unreachable"
+    except Exception:
+        result["status"] = "error"
 
     return result

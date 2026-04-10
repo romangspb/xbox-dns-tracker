@@ -10,15 +10,19 @@ const CHECK_STATUS_LABELS = {
   timeout: 'Не отвечает',
   error: 'Ошибка',
   unchecked: 'Не проверен',
+  reachable: 'Доступен',
+  unreachable: 'Недоступен',
 };
 
 const CHECK_STATUS_HINTS = {
   working: 'DNS обходит блокировку Xbox. Проверено автоматически через резолв xsts.auth.xboxlive.com.',
   not_working: 'DNS не обходит блокировку — возвращает стандартный IP Microsoft Azure.',
   unsafe: 'DNS обходит блокировку, но подменяет обычные сайты (google.com). Может перехватывать трафик.',
-  timeout: 'DNS-сервер не ответил за 5 секунд. Может быть недоступен из вашего региона или не работает.',
-  error: 'Произошла ошибка при проверке DNS-сервера.',
-  unchecked: 'DNS ещё не проходил автоматическую проверку.',
+  timeout: 'Сервер не ответил за 5 секунд. Может быть недоступен из вашего региона.',
+  error: 'Произошла ошибка при проверке.',
+  unchecked: 'Ещё не проходил автоматическую проверку.',
+  reachable: 'Прокси-сервер доступен на порту 443. Скорее всего работает для подмены на роутере.',
+  unreachable: 'Прокси-сервер не отвечает. Скорее всего не работает.',
 };
 
 const DIFFICULTY_LABELS = {
@@ -204,10 +208,15 @@ function renderFilters() {
       </button>
     </div>`;
 
-  // Фильтр по статусу (не для xsts)
+  // Фильтр по статусу
   let statusHtml = '';
-  if (filterType !== 'xsts') {
-    const statusOptions = [
+  {
+    const statusOptions = filterType === 'xsts' ? [
+      { key: 'all', label: 'Все' },
+      { key: 'reachable', label: 'Доступен' },
+      { key: 'timeout', label: 'Не отвечает' },
+      { key: 'unreachable', label: 'Недоступен' },
+    ] : [
       { key: 'all', label: 'Все' },
       { key: 'working', label: 'Работает' },
       { key: 'timeout', label: 'Не отвечает' },
@@ -258,8 +267,8 @@ function renderAll() {
     methods = appData.methods.filter(m => m.active !== false && m.type === 'xsts_ip');
   }
 
-  // Фильтр по статусу (не для xsts)
-  if (filterType !== 'xsts' && !filterStatuses.has('all')) {
+  // Фильтр по статусу
+  if (!filterStatuses.has('all')) {
     methods = methods.filter(m => filterStatuses.has(m.dns_check?.status || 'unchecked'));
   }
 
@@ -329,12 +338,11 @@ function renderCard(method, currentUser) {
   const checkStatus = method.dns_check?.status || 'unchecked';
   const statusLabel = CHECK_STATUS_LABELS[checkStatus] || checkStatus;
   const sourceCount = method.sources?.length || 0;
-  const isRecommended = !isXsts && checkStatus === 'working' && sourceCount >= 2;
+  const isRecommended = (!isXsts && checkStatus === 'working' && sourceCount >= 2)
+    || (isXsts && checkStatus === 'reachable' && sourceCount >= 2);
 
-  // Статус-бейдж (кликабельный, не для xsts)
-  let statusHtml = '';
-  if (!isXsts) {
-    statusHtml = `<span class="dns-status ${checkStatus}" onclick="showStatusPopup('${checkStatus}', this)">${statusLabel}</span>`;
+  // Статус-бейдж (кликабельный)
+  let statusHtml = `<span class="dns-status ${checkStatus}" onclick="showStatusPopup('${checkStatus}', this)">${statusLabel}</span>`;
   }
 
   let ipHtml = '';
