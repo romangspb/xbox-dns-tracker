@@ -1,0 +1,884 @@
+{
+  "updated_at": "2026-04-10T17:44:55+00:00",
+  "methods": [
+    {
+      "id": "xst-05428d35",
+      "type": "xsts_ip",
+      "difficulty": "medium",
+      "primary_dns": "50.7.87.82",
+      "secondary_dns": null,
+      "description": null,
+      "sources": [
+        "src-chipslays"
+      ],
+      "source_urls": [
+        "https://github.com/chipslays/0x80a40401"
+      ],
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null
+    },
+    {
+      "id": "xst-a058a628",
+      "type": "xsts_ip",
+      "difficulty": "medium",
+      "primary_dns": "50.7.87.83",
+      "secondary_dns": null,
+      "description": null,
+      "sources": [
+        "src-chipslays"
+      ],
+      "source_urls": [
+        "https://github.com/chipslays/0x80a40401"
+      ],
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null
+    },
+    {
+      "id": "xst-720a3abd",
+      "type": "xsts_ip",
+      "difficulty": "medium",
+      "primary_dns": "50.7.87.84",
+      "secondary_dns": null,
+      "description": null,
+      "sources": [
+        "src-chipslays"
+      ],
+      "source_urls": [
+        "https://github.com/chipslays/0x80a40401"
+      ],
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null
+    },
+    {
+      "id": "xst-dce337ab",
+      "type": "xsts_ip",
+      "difficulty": "medium",
+      "primary_dns": "50.7.87.85",
+      "secondary_dns": null,
+      "description": null,
+      "sources": [
+        "src-chipslays"
+      ],
+      "source_urls": [
+        "https://github.com/chipslays/0x80a40401"
+      ],
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null
+    },
+    {
+      "id": "xst-07333f9c",
+      "type": "xsts_ip",
+      "difficulty": "medium",
+      "primary_dns": "50.7.87.86",
+      "secondary_dns": null,
+      "description": null,
+      "sources": [
+        "src-chipslays"
+      ],
+      "source_urls": [
+        "https://github.com/chipslays/0x80a40401"
+      ],
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null
+    },
+    {
+      "id": "xst-c87d52ed",
+      "type": "xsts_ip",
+      "difficulty": "medium",
+      "primary_dns": "50.7.85.218",
+      "secondary_dns": null,
+      "description": null,
+      "sources": [
+        "src-chipslays"
+      ],
+      "source_urls": [
+        "https://github.com/chipslays/0x80a40401"
+      ],
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null
+    },
+    {
+      "id": "xst-15579303",
+      "type": "xsts_ip",
+      "difficulty": "medium",
+      "primary_dns": "50.7.85.219",
+      "secondary_dns": null,
+      "description": null,
+      "sources": [
+        "src-chipslays"
+      ],
+      "source_urls": [
+        "https://github.com/chipslays/0x80a40401"
+      ],
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null
+    },
+    {
+      "id": "xst-c2bf7bea",
+      "type": "xsts_ip",
+      "difficulty": "medium",
+      "primary_dns": "50.7.85.220",
+      "secondary_dns": null,
+      "description": null,
+      "sources": [
+        "src-chipslays"
+      ],
+      "source_urls": [
+        "https://github.com/chipslays/0x80a40401"
+      ],
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null
+    },
+    {
+      "id": "xst-13df35a1",
+      "type": "xsts_ip",
+      "difficulty": "medium",
+      "primary_dns": "50.7.85.221",
+      "secondary_dns": null,
+      "description": null,
+      "sources": [
+        "src-chipslays"
+      ],
+      "source_urls": [
+        "https://github.com/chipslays/0x80a40401"
+      ],
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null
+    },
+    {
+      "id": "xst-56b4f0c2",
+      "type": "xsts_ip",
+      "difficulty": "medium",
+      "primary_dns": "50.7.85.222",
+      "secondary_dns": null,
+      "description": null,
+      "sources": [
+        "src-chipslays"
+      ],
+      "source_urls": [
+        "https://github.com/chipslays/0x80a40401"
+      ],
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null
+    },
+    {
+      "id": "xst-4cb03aec",
+      "type": "xsts_ip",
+      "difficulty": "medium",
+      "primary_dns": "164.90.228.248",
+      "secondary_dns": null,
+      "description": null,
+      "sources": [
+        "src-xbox-news-ru"
+      ],
+      "source_urls": [
+        "https://xbox-news.ru/news/1049425/"
+      ],
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": "https://xbox-news.ru/news/1049425/"
+    },
+    {
+      "id": "dns-6771d7a8",
+      "type": "dns_pair",
+      "difficulty": "easy",
+      "primary_dns": "31.192.108.180",
+      "secondary_dns": "176.99.11.77",
+      "description": null,
+      "sources": [
+        "src-xboxnews-ru",
+        "src-xbox-dns",
+        "src-xbox-news-ru"
+      ],
+      "source_urls": [
+        "https://t.me/xboxnews_ru/7287",
+        "https://t.me/xbox_dns/132",
+        "https://xbox-news.ru/news/1049425/"
+      ],
+      "first_seen": "2026-04-09",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null,
+      "dns_check": {
+        "status": "unsafe",
+        "checked_at": "2026-04-10T17:45:00+00:00",
+        "resolved_ip": "87.228.47.196"
+      }
+    },
+    {
+      "id": "dns-14a928bb",
+      "type": "dns_pair",
+      "difficulty": "easy",
+      "primary_dns": "45.90.33.120",
+      "secondary_dns": "0.0.0.0",
+      "description": null,
+      "sources": [
+        "src-xboxnews-ru",
+        "src-xbox-news-ru"
+      ],
+      "source_urls": [
+        "https://t.me/xboxnews_ru/7287",
+        "https://xbox-news.ru/news/1049425/"
+      ],
+      "first_seen": "2026-04-09",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null,
+      "dns_check": {
+        "status": "unsafe",
+        "checked_at": "2026-04-10T17:45:02+00:00",
+        "resolved_ip": "31.129.110.240"
+      }
+    },
+    {
+      "id": "dns-26b18cf7",
+      "type": "dns_pair",
+      "difficulty": "easy",
+      "primary_dns": "176.99.11.77",
+      "secondary_dns": "80.78.247.254",
+      "description": null,
+      "sources": [
+        "src-xboxnews-ru",
+        "src-xbox-news-ru"
+      ],
+      "source_urls": [
+        "https://t.me/xboxnews_ru/7287",
+        "https://xbox-news.ru/news/1049425/"
+      ],
+      "first_seen": "2026-04-09",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null,
+      "dns_check": {
+        "status": "working",
+        "checked_at": "2026-04-10T17:45:03+00:00",
+        "resolved_ip": "87.228.47.196"
+      }
+    },
+    {
+      "id": "dns-d3b9d170",
+      "type": "dns_pair",
+      "difficulty": "easy",
+      "primary_dns": "196.11.99.77",
+      "secondary_dns": "0.0.0.0",
+      "description": null,
+      "sources": [
+        "src-xboxnews-ru",
+        "src-xbox-news-ru"
+      ],
+      "source_urls": [
+        "https://t.me/xboxnews_ru/7287",
+        "https://xbox-news.ru/news/1049425/"
+      ],
+      "first_seen": "2026-04-09",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null,
+      "dns_check": {
+        "status": "timeout",
+        "checked_at": "2026-04-10T17:45:04+00:00",
+        "resolved_ip": null
+      }
+    },
+    {
+      "id": "dns-1f2708e9",
+      "type": "dns_pair",
+      "difficulty": "easy",
+      "primary_dns": "95.216.232.133",
+      "secondary_dns": "0.0.0.0",
+      "description": null,
+      "sources": [
+        "src-xboxnews-ru",
+        "src-xbox-news-ru"
+      ],
+      "source_urls": [
+        "https://t.me/xboxnews_ru/7287",
+        "https://xbox-news.ru/news/1049425/"
+      ],
+      "first_seen": "2026-04-09",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null,
+      "dns_check": {
+        "status": "unsafe",
+        "checked_at": "2026-04-10T17:45:10+00:00",
+        "resolved_ip": "95.216.232.133"
+      }
+    },
+    {
+      "id": "dns-1e462b5a",
+      "type": "dns_pair",
+      "difficulty": "easy",
+      "primary_dns": "195.123.210.89",
+      "secondary_dns": "0.0.0.0",
+      "description": null,
+      "sources": [
+        "src-xboxnews-ru",
+        "src-xbox-news-ru"
+      ],
+      "source_urls": [
+        "https://t.me/xboxnews_ru/7287",
+        "https://xbox-news.ru/news/1049425/"
+      ],
+      "first_seen": "2026-04-09",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null,
+      "dns_check": {
+        "status": "unsafe",
+        "checked_at": "2026-04-10T17:45:10+00:00",
+        "resolved_ip": "195.123.210.89"
+      }
+    },
+    {
+      "id": "dns-92deb707",
+      "type": "dns_pair",
+      "difficulty": "easy",
+      "primary_dns": "111.88.96.50",
+      "secondary_dns": "111.88.96.51",
+      "description": null,
+      "sources": [
+        "src-xboxnews-ru",
+        "src-xbox-dns",
+        "src-xbox-dns-ru",
+        "src-xbox-news-ru"
+      ],
+      "source_urls": [
+        "https://t.me/xboxnews_ru/7287",
+        "https://t.me/xbox_dns/135",
+        "https://t.me/xbox_dns/139",
+        "https://xbox-dns.ru",
+        "https://xbox-news.ru/news/1049425/"
+      ],
+      "first_seen": "2026-04-09",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null,
+      "dns_check": {
+        "status": "unsafe",
+        "checked_at": "2026-04-10T17:45:11+00:00",
+        "resolved_ip": "87.228.47.196"
+      }
+    },
+    {
+      "id": "dns-a8739d44",
+      "type": "dns_pair",
+      "difficulty": "easy",
+      "primary_dns": "37.220.84.124",
+      "secondary_dns": "85.234.106.202",
+      "description": null,
+      "sources": [
+        "src-xboxnews-ru",
+        "src-xbox-news-ru"
+      ],
+      "source_urls": [
+        "https://t.me/xboxnews_ru/7287",
+        "https://xbox-news.ru/news/1049425/"
+      ],
+      "first_seen": "2026-04-09",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null,
+      "dns_check": {
+        "status": "timeout",
+        "checked_at": "2026-04-10T17:45:12+00:00",
+        "resolved_ip": null
+      }
+    },
+    {
+      "id": "dns-59e4c1be",
+      "type": "dns_pair",
+      "difficulty": "easy",
+      "primary_dns": "87.228.47.200",
+      "secondary_dns": "87.228.47.201",
+      "description": null,
+      "sources": [
+        "src-xbox-dns",
+        "src-xbox-news-ru"
+      ],
+      "source_urls": [
+        "https://t.me/xbox_dns/134",
+        "https://xbox-news.ru/news/1049425/"
+      ],
+      "first_seen": "2026-03-13",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null,
+      "dns_check": {
+        "status": "timeout",
+        "checked_at": "2026-04-10T17:45:17+00:00",
+        "resolved_ip": null
+      }
+    },
+    {
+      "id": "dns-ebc2f08a",
+      "type": "dns_pair",
+      "difficulty": "easy",
+      "primary_dns": "2a00:ab00:533:6::200",
+      "secondary_dns": "2a00:ab00:533:6::201",
+      "description": null,
+      "sources": [
+        "src-xbox-dns",
+        "src-xbox-news-ru"
+      ],
+      "source_urls": [
+        "https://t.me/xbox_dns/134",
+        "https://xbox-news.ru/news/1049425/"
+      ],
+      "first_seen": "2026-03-13",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null,
+      "dns_check": {
+        "status": "error",
+        "checked_at": "2026-04-10T17:45:23+00:00",
+        "resolved_ip": null
+      }
+    },
+    {
+      "id": "dns-f4b5a240",
+      "type": "dns_pair",
+      "difficulty": "easy",
+      "primary_dns": "2a00:ab00:1233:26::50",
+      "secondary_dns": "2a00:ab00:1233:26::51",
+      "description": null,
+      "sources": [
+        "src-xbox-dns",
+        "src-xbox-news-ru"
+      ],
+      "source_urls": [
+        "https://t.me/xbox_dns/135",
+        "https://t.me/xbox_dns/139",
+        "https://xbox-news.ru/news/1049425/"
+      ],
+      "first_seen": "2026-03-17",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null,
+      "dns_check": {
+        "status": "error",
+        "checked_at": "2026-04-10T17:45:23+00:00",
+        "resolved_ip": null
+      }
+    },
+    {
+      "id": "dns-9691a50b",
+      "type": "dns_pair",
+      "difficulty": "easy",
+      "primary_dns": "178.122.22.10",
+      "secondary_dns": "185.51.200.2",
+      "description": null,
+      "sources": [
+        "src-chipslays",
+        "src-xbox-news-ru"
+      ],
+      "source_urls": [
+        "https://github.com/chipslays/0x80a40401",
+        "https://xbox-news.ru/news/1049425/"
+      ],
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null,
+      "dns_check": {
+        "status": "timeout",
+        "checked_at": "2026-04-10T17:45:23+00:00",
+        "resolved_ip": null
+      }
+    },
+    {
+      "id": "dns-e42a2bbb",
+      "type": "dns_pair",
+      "difficulty": "easy",
+      "primary_dns": "185.51.200.2",
+      "secondary_dns": null,
+      "description": null,
+      "sources": [
+        "src-chipslays",
+        "src-xbox-news-ru"
+      ],
+      "source_urls": [
+        "https://github.com/chipslays/0x80a40401",
+        "https://xbox-news.ru/news/1049425/"
+      ],
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null,
+      "dns_check": {
+        "status": "timeout",
+        "checked_at": "2026-04-10T17:45:28+00:00",
+        "resolved_ip": null
+      }
+    },
+    {
+      "id": "dns-0954b387",
+      "type": "dns_pair",
+      "difficulty": "easy",
+      "primary_dns": "178.22.122.100",
+      "secondary_dns": "78.157.42.100",
+      "description": null,
+      "sources": [
+        "src-chipslays"
+      ],
+      "source_urls": [
+        "https://github.com/chipslays/0x80a40401"
+      ],
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null,
+      "dns_check": {
+        "status": "not_working",
+        "checked_at": "2026-04-10T17:45:33+00:00",
+        "resolved_ip": "20.201.200.49"
+      }
+    },
+    {
+      "id": "dns-4474b0e2",
+      "type": "dns_pair",
+      "difficulty": "easy",
+      "primary_dns": "78.157.42.100",
+      "secondary_dns": "8.8.8.8",
+      "description": null,
+      "sources": [
+        "src-chipslays",
+        "src-xbox-news-ru"
+      ],
+      "source_urls": [
+        "https://github.com/chipslays/0x80a40401",
+        "https://xbox-news.ru/news/1049425/"
+      ],
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null,
+      "dns_check": {
+        "status": "timeout",
+        "checked_at": "2026-04-10T17:45:34+00:00",
+        "resolved_ip": null
+      }
+    },
+    {
+      "id": "dns-549afab3",
+      "type": "dns_pair",
+      "difficulty": "easy",
+      "primary_dns": "212.220.116.30",
+      "secondary_dns": null,
+      "description": null,
+      "sources": [
+        "src-chipslays",
+        "src-xbox-news-ru"
+      ],
+      "source_urls": [
+        "https://github.com/chipslays/0x80a40401",
+        "https://xbox-news.ru/news/1049425/"
+      ],
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": null,
+      "dns_check": {
+        "status": "timeout",
+        "checked_at": "2026-04-10T17:45:39+00:00",
+        "resolved_ip": null
+      }
+    },
+    {
+      "id": "dns-af874fa8",
+      "type": "dns_pair",
+      "difficulty": "easy",
+      "primary_dns": "111.88.96.51",
+      "secondary_dns": null,
+      "description": null,
+      "sources": [
+        "src-xbox-news-ru"
+      ],
+      "source_urls": [
+        "https://xbox-news.ru/news/1049425/"
+      ],
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": "https://xbox-news.ru/news/1049425/",
+      "dns_check": {
+        "status": "unsafe",
+        "checked_at": "2026-04-10T17:45:45+00:00",
+        "resolved_ip": "87.228.47.196"
+      }
+    },
+    {
+      "id": "dns-21510bbc",
+      "type": "dns_pair",
+      "difficulty": "easy",
+      "primary_dns": "87.228.47.201",
+      "secondary_dns": null,
+      "description": null,
+      "sources": [
+        "src-xbox-news-ru"
+      ],
+      "source_urls": [
+        "https://xbox-news.ru/news/1049425/"
+      ],
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": "https://xbox-news.ru/news/1049425/",
+      "dns_check": {
+        "status": "timeout",
+        "checked_at": "2026-04-10T17:45:46+00:00",
+        "resolved_ip": null
+      }
+    },
+    {
+      "id": "dns-7535597d",
+      "type": "dns_pair",
+      "difficulty": "easy",
+      "primary_dns": "89.111.140.30",
+      "secondary_dns": "0.0.0.0",
+      "description": null,
+      "sources": [
+        "src-xbox-news-ru"
+      ],
+      "source_urls": [
+        "https://xbox-news.ru/news/1049425/"
+      ],
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": "https://xbox-news.ru/news/1049425/",
+      "dns_check": {
+        "status": "timeout",
+        "checked_at": "2026-04-10T17:45:51+00:00",
+        "resolved_ip": null
+      }
+    },
+    {
+      "id": "dns-f8609739",
+      "type": "dns_pair",
+      "difficulty": "easy",
+      "primary_dns": "8.26.56.10",
+      "secondary_dns": "8.20.247.10",
+      "description": null,
+      "sources": [
+        "src-xbox-news-ru"
+      ],
+      "source_urls": [
+        "https://xbox-news.ru/news/1049425/"
+      ],
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": "https://xbox-news.ru/news/1049425/",
+      "dns_check": {
+        "status": "not_working",
+        "checked_at": "2026-04-10T17:45:56+00:00",
+        "resolved_ip": "40.90.8.102"
+      }
+    },
+    {
+      "id": "dns-4bef5c1f",
+      "type": "dns_pair",
+      "difficulty": "easy",
+      "primary_dns": "178.12.122.100",
+      "secondary_dns": "78.157.42.100",
+      "description": null,
+      "sources": [
+        "src-xbox-news-ru"
+      ],
+      "source_urls": [
+        "https://xbox-news.ru/news/1049425/"
+      ],
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": "https://xbox-news.ru/news/1049425/",
+      "dns_check": {
+        "status": "timeout",
+        "checked_at": "2026-04-10T17:45:57+00:00",
+        "resolved_ip": null
+      }
+    },
+    {
+      "id": "dns-eb5f720a",
+      "type": "dns_pair",
+      "difficulty": "easy",
+      "primary_dns": "196.99.11.77",
+      "secondary_dns": "0.0.0.0",
+      "description": null,
+      "sources": [
+        "src-xbox-news-ru"
+      ],
+      "source_urls": [
+        "https://xbox-news.ru/news/1049425/"
+      ],
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": "https://xbox-news.ru/news/1049425/",
+      "dns_check": {
+        "status": "timeout",
+        "checked_at": "2026-04-10T17:46:02+00:00",
+        "resolved_ip": null
+      }
+    },
+    {
+      "id": "dns-06a1e7f0",
+      "type": "dns_pair",
+      "difficulty": "easy",
+      "primary_dns": "80.78.247.254",
+      "secondary_dns": "0.0.0.0",
+      "description": null,
+      "sources": [
+        "src-xbox-news-ru"
+      ],
+      "source_urls": [
+        "https://xbox-news.ru/news/1049425/"
+      ],
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": "https://xbox-news.ru/news/1049425/",
+      "dns_check": {
+        "status": "timeout",
+        "checked_at": "2026-04-10T17:46:07+00:00",
+        "resolved_ip": null
+      }
+    },
+    {
+      "id": "dns-247a1b59",
+      "type": "dns_pair",
+      "difficulty": "easy",
+      "primary_dns": "50.7.85.221",
+      "secondary_dns": "0.0.0.0",
+      "description": null,
+      "sources": [
+        "src-xbox-news-ru"
+      ],
+      "source_urls": [
+        "https://xbox-news.ru/news/1049425/"
+      ],
+      "first_seen": "2026-04-10",
+      "last_seen": "2026-04-10",
+      "active": true,
+      "recheck": false,
+      "instruction_url": "https://xbox-news.ru/news/1049425/",
+      "dns_check": {
+        "status": "timeout",
+        "checked_at": "2026-04-10T17:46:13+00:00",
+        "resolved_ip": null
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "src-xboxnews-ru",
+      "name": "Xbox News RU (Telegram)",
+      "type": "telegram",
+      "url": "https://t.me/s/xboxnews_ru",
+      "last_parsed": "2026-04-10T17:44:55+00:00",
+      "status": "ok",
+      "error_message": null
+    },
+    {
+      "id": "src-xbox-dns",
+      "name": "Xbox DNS (Telegram)",
+      "type": "telegram",
+      "url": "https://t.me/s/xbox_dns",
+      "last_parsed": "2026-04-10T17:44:55+00:00",
+      "status": "ok",
+      "error_message": null
+    },
+    {
+      "id": "src-chipslays",
+      "name": "chipslays/0x80a40401",
+      "type": "github",
+      "url": "https://raw.githubusercontent.com/chipslays/0x80a40401/main/README.md",
+      "last_parsed": "2026-04-10T17:44:55+00:00",
+      "status": "ok",
+      "error_message": null
+    },
+    {
+      "id": "src-xbox-dns-ru",
+      "name": "xbox-dns.ru",
+      "type": "website",
+      "url": "https://xbox-dns.ru",
+      "last_parsed": "2026-04-10T17:44:55+00:00",
+      "status": "ok",
+      "error_message": null
+    },
+    {
+      "id": "src-xbox-news-ru",
+      "name": "xbox-news.ru",
+      "type": "website",
+      "url": "https://xbox-news.ru/news/1049425/",
+      "last_parsed": "2026-04-10T17:44:55+00:00",
+      "status": "ok",
+      "error_message": null
+    },
+    {
+      "id": "src-skorches",
+      "name": "skorches/xbox-dns-bypass",
+      "type": "github",
+      "url": "https://github.com/skorches/xbox-dns-bypass",
+      "last_parsed": "2026-04-10T17:44:55+00:00",
+      "status": "ok",
+      "error_message": null
+    }
+  ]
+}

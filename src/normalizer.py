@@ -81,23 +81,59 @@ def generate_method_id(method_type: str, primary: str | None, secondary: str | N
     return f"{method_type[:3]}-{short_hash}"
 
 
+def _has_real_secondary(m: Method) -> bool:
+    """Проверяет, есть ли реальный secondary DNS (не None и не 0.0.0.0)."""
+    sec = m.get("secondary_dns")
+    return sec is not None and sec != "0.0.0.0"
+
+
 def deduplicate_methods(methods: list[Method]) -> list[Method]:
-    """Дедупликация методов по ID. При дублях — объединяет sources и source_urls."""
+    """Дедупликация методов: сначала по ID, потом по primary_dns для dns_pair."""
+    # Шаг 1: дедупликация по ID (объединяем sources)
     seen: dict[str, Method] = {}
     for m in methods:
         mid = m["id"]
         if mid in seen:
             existing = seen[mid]
-            # Объединяем источники
             for src in m.get("sources", []):
                 if src not in existing.get("sources", []):
                     existing.setdefault("sources", []).append(src)
             for url in m.get("source_urls", []):
                 if url not in existing.get("source_urls", []):
                     existing.setdefault("source_urls", []).append(url)
-            # Обновляем last_seen на более свежую дату
             if m.get("last_seen", "") > existing.get("last_seen", ""):
                 existing["last_seen"] = m["last_seen"]
         else:
             seen[mid] = m
-    return list(seen.values())
+
+    # Шаг 2: дедупликация dns_pair по primary_dns
+    # Один primary — одна карточка (с лучшим secondary)
+    by_primary: dict[str, Method] = {}
+    result: list[Method] = []
+
+    for m in seen.values():
+        if m.get("type") != "dns_pair":
+            result.append(m)
+            continue
+
+        primary = m.get("primary_dns", "")
+        if primary in by_primary:
+            existing = by_primary[primary]
+            # Объединяем sources
+            for src in m.get("sources", []):
+                if src not in existing.get("sources", []):
+                    existing.setdefault("sources", []).append(src)
+            for url in m.get("source_urls", []):
+                if url not in existing.get("source_urls", []):
+                    existing.setdefault("source_urls", []).append(url)
+            # Если текущий имеет реальный secondary, а существующий нет — заменяем
+            if _has_real_secondary(m) and not _has_real_secondary(existing):
+                existing["secondary_dns"] = m["secondary_dns"]
+                existing["id"] = m["id"]
+            if m.get("last_seen", "") > existing.get("last_seen", ""):
+                existing["last_seen"] = m["last_seen"]
+        else:
+            by_primary[primary] = m
+
+    result.extend(by_primary.values())
+    return result
