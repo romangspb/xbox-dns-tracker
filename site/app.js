@@ -12,6 +12,7 @@ const CHECK_STATUS_LABELS = {
   unchecked: 'Не проверен',
   reachable: 'Доступен',
   unreachable: 'Недоступен',
+  ipv6_unchecked: 'IPv6',
 };
 
 const CHECK_STATUS_HINTS = {
@@ -23,6 +24,7 @@ const CHECK_STATUS_HINTS = {
   unchecked: 'Ещё не проходил автоматическую проверку.',
   reachable: 'Прокси-сервер доступен на порту 443. Скорее всего работает для подмены на роутере.',
   unreachable: 'Прокси-сервер не отвечает. Скорее всего не работает.',
+  ipv6_unchecked: 'IPv6 DNS не проверяется автоматически (ограничение GitHub Actions). Попробуй — скорее всего работает, если у тебя IPv6-интернет.',
 };
 
 const DIFFICULTY_LABELS = {
@@ -220,6 +222,9 @@ function renderFilters() {
       { key: 'reachable', label: 'Доступен' },
       { key: 'timeout', label: 'Не отвечает' },
       { key: 'unreachable', label: 'Недоступен' },
+    ] : filterType === 'dns_v6' ? [
+      { key: 'all', label: 'Все' },
+      { key: 'ipv6_unchecked', label: 'IPv6 (не проверяется)' },
     ] : [
       { key: 'all', label: 'Все' },
       { key: 'working', label: 'Работает' },
@@ -297,7 +302,7 @@ function renderAll() {
   if (filterType === 'dns_v4') {
     hint.innerHTML = 'Нажми на IP чтобы скопировать → <strong>Настройки Xbox</strong> → Сеть → Дополнительные → DNS (вручную)';
   } else if (filterType === 'dns_v6') {
-    hint.innerHTML = 'IPv6 DNS → <strong>Настройки Xbox</strong> → Сеть → Дополнительные → DNS (вручную) → IPv6';
+    hint.innerHTML = 'Пробуй только если IPv4 не помогли и твой интернет поддерживает IPv6. Эти DNS не проверяются автоматически — подставляй и смотри.';
   } else {
     hint.innerHTML = 'IP для подмены <strong>xsts.auth.xboxlive.com</strong> на роутере. Статус проверки не применим — это целевые IP, а не DNS-серверы.';
   }

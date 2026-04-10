@@ -120,14 +120,26 @@ def run() -> None:
         final_methods = unique_methods
 
     # Автопроверка DNS (v0.2)
+    # IPv6 не проверяется — GitHub Actions не поддерживают IPv6
     from src.checker import check_dns
+    from datetime import datetime as _dt, timezone as _tz
     dns_cache: dict[str, dict] = {}
     checked = 0
+    ipv6_skipped = 0
     for method in final_methods:
         if method.get("type") != "dns_pair":
             continue
         primary = method.get("primary_dns")
         if not primary or primary == "0.0.0.0":
+            continue
+        # IPv6 — особая обработка
+        if ":" in primary:
+            method["dns_check"] = {
+                "status": "ipv6_unchecked",
+                "checked_at": _dt.now(_tz.utc).isoformat(timespec="seconds"),
+                "resolved_ip": None,
+            }
+            ipv6_skipped += 1
             continue
         if primary in dns_cache:
             method["dns_check"] = dns_cache[primary]
@@ -138,7 +150,7 @@ def run() -> None:
         method["dns_check"] = result
         log.info("  → %s (IP: %s)", result["status"], result.get("resolved_ip"))
         checked += 1
-    log.info("Проверено DNS: %d уникальных", checked)
+    log.info("Проверено DNS: %d уникальных, IPv6 пропущено: %d", checked, ipv6_skipped)
 
     # Автопроверка xsts IP (v1.0.3)
     from src.checker import check_xsts_ip
