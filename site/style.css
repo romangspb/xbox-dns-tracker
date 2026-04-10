@@ -448,10 +448,14 @@ footer {
   background: none;
   border: none;
   color: var(--accent);
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
   text-decoration: none;
   font-family: inherit;
+}
+
+.footer-suggest {
+  font-weight: 600;
 }
 
 .separator {

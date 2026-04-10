@@ -1,0 +1,36 @@
+name: "Предложить DNS / xsts IP"
+description: "Отправить рабочий DNS или xsts IP, или ссылку на источник"
+title: "[DNS] "
+labels: ["dns-suggestion"]
+body:
+  - type: dropdown
+    id: type
+    attributes:
+      label: Тип
+      options:
+        - DNS (пара IP для Xbox)
+        - xsts IP (для роутера)
+        - Ссылка на источник
+    validations:
+      required: true
+  - type: input
+    id: primary
+    attributes:
+      label: Primary IP
+      description: "Основной DNS или xsts IP"
+      placeholder: "например 176.99.11.77"
+  - type: input
+    id: secondary
+    attributes:
+      label: Secondary IP (если есть)
+      placeholder: "например 80.78.247.254"
+  - type: input
+    id: source_url
+    attributes:
+      label: Ссылка на источник (если есть)
+      placeholder: "https://t.me/..."
+  - type: textarea
+    id: notes
+    attributes:
+      label: Комментарий
+      placeholder: "Откуда узнал, работает ли у тебя, и т.д."

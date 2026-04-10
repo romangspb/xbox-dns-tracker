@@ -51,6 +51,11 @@
           <p><strong>DNS IPv6</strong> — для сетей с IPv6</p>
           <p><strong>xsts IP</strong> — IP для подмены на роутере (продвинутый способ)</p>
         </div>
+        <div class="help-section">
+          <h3>Предложить DNS</h3>
+          <p>Нашёл рабочий DNS или источник? Нажми <strong>«+ Предложить DNS»</strong> внизу — откроется форма на GitHub.</p>
+          <p>После отправки DNS появится в очереди на проверку. Если он рабочий — добавится на сайт при следующем обновлении. Нужен GitHub-аккаунт.</p>
+        </div>
       </div>
       <button class="modal-close" onclick="document.getElementById('help-modal').classList.remove('active')">Понятно</button>
     </div>
@@ -69,9 +74,11 @@
 
   <footer>
     <div class="footer-actions">
-      <a href="https://github.com/romangspb/xbox-dns-tracker/actions" target="_blank" class="footer-link">Обновить данные</a>
+      <a href="https://github.com/romangspb/xbox-dns-tracker/issues/new?template=suggest-dns.yml" target="_blank" class="footer-link footer-suggest">+ Предложить DNS</a>
       <span class="separator">|</span>
-      <button class="footer-link" id="change-user">Сменить пользователя</button>
+      <a href="https://github.com/romangspb/xbox-dns-tracker/actions" target="_blank" class="footer-link">Обновить</a>
+      <span class="separator">|</span>
+      <button class="footer-link" id="change-user">Пользователь</button>
     </div>
     <p class="disclaimer">DNS из открытых источников. Используйте на свой риск.</p>
   </footer>
