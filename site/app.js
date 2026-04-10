@@ -347,7 +347,6 @@ function renderCard(method, currentUser) {
 
   // Статус-бейдж (кликабельный)
   let statusHtml = `<span class="dns-status ${checkStatus}" onclick="showStatusPopup('${checkStatus}', this, event)">${statusLabel}</span>`;
-  }
 
   let ipHtml = '';
   if (method.primary_dns) {
