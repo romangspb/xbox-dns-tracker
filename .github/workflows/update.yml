@@ -4,6 +4,8 @@ on:
   schedule:
     - cron: '37 4 * * *'  # Ежедневно в 4:37 UTC
   workflow_dispatch:        # Ручной запуск
+  push:
+    branches: [main]       # При пуше в main — редеплой сайта
 
 permissions:
   contents: read
