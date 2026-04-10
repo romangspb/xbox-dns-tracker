@@ -101,6 +101,27 @@ def run() -> None:
     else:
         final_methods = unique_methods
 
+    # Автопроверка DNS (v0.2)
+    from src.checker import check_dns
+    dns_cache: dict[str, dict] = {}
+    checked = 0
+    for method in final_methods:
+        if method.get("type") != "dns_pair":
+            continue
+        primary = method.get("primary_dns")
+        if not primary or primary == "0.0.0.0":
+            continue
+        if primary in dns_cache:
+            method["dns_check"] = dns_cache[primary]
+            continue
+        log.info("Проверка DNS: %s", primary)
+        result = check_dns(primary)
+        dns_cache[primary] = result
+        method["dns_check"] = result
+        log.info("  → %s (IP: %s)", result["status"], result.get("resolved_ip"))
+        checked += 1
+    log.info("Проверено DNS: %d уникальных", checked)
+
     data: DataFile = {
         "updated_at": now,
         "methods": final_methods,
