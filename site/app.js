@@ -432,9 +432,8 @@ async function init() {
   document.getElementById('change-user').onclick = showUserPicker;
   document.getElementById('help-btn').onclick = showHelp;
 
-  // Cache busting: добавляем timestamp к запросу data.json
   try {
-    const resp = await fetch('data.json?t=' + Date.now());
+    const resp = await fetch('data.json');
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     appData = await resp.json();
     renderAll();
