@@ -266,51 +266,6 @@ main {
 .dns-status.unreachable { background: rgba(239, 83, 80, 0.15); color: var(--danger); }
 .dns-status.ipv6_unchecked { background: rgba(108, 180, 238, 0.12); color: var(--accent); }
 
-/* Кнопка проверки xsts IP с устройства */
-.device-check {
-  margin-top: 10px;
-}
-
-.device-check-btn {
-  width: 100%;
-  background: rgba(108, 180, 238, 0.1);
-  color: var(--accent);
-  border: 1px solid rgba(108, 180, 238, 0.25);
-  border-radius: 10px;
-  padding: 10px 12px;
-  font-size: 13px;
-  font-family: inherit;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-
-.device-check-btn:active {
-  transform: scale(0.98);
-}
-
-.device-check-btn:disabled {
-  cursor: default;
-}
-
-.device-check-btn.checking {
-  background: rgba(117, 117, 117, 0.15);
-  color: var(--text-secondary);
-  border-color: transparent;
-}
-
-.device-check-btn.success {
-  background: rgba(76, 175, 80, 0.15);
-  color: var(--success);
-  border-color: rgba(76, 175, 80, 0.3);
-}
-
-.device-check-btn.failed {
-  background: rgba(239, 83, 80, 0.12);
-  color: var(--danger);
-  border-color: rgba(239, 83, 80, 0.25);
-}
-
 /* IP-блок для копирования */
 .dns-ip-row {
   display: flex;

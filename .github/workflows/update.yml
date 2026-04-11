@@ -6,9 +6,11 @@ on:
   workflow_dispatch:        # Ручной запуск
   push:
     branches: [main]       # При пуше в main — редеплой сайта
+    paths-ignore:
+      - 'site/data.json'   # игнорируем коммиты от самого workflow, чтобы избежать рекурсии
 
 permissions:
-  contents: read
+  contents: write           # для коммита обновлённого site/data.json
   pages: write
   id-token: write
 
@@ -39,6 +41,18 @@ jobs:
 
       - name: Copy data to site
         run: cp data/data.json site/data.json
+
+      - name: Commit updated site/data.json (for Vercel auto-deploy)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet site/data.json; then
+            git add site/data.json
+            git commit -m "Update data.json [skip ci]"
+            git push
+          else
+            echo "site/data.json unchanged, nothing to commit"
+          fi
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

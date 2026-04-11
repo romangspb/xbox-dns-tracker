@@ -326,17 +326,18 @@ xbox-dns-tracker.vercel.app
 
 ---
 
-## Фаза 4.7 mini — удалить per-xsts device-check кнопки [ ]
+## Фаза 4.7 mini — удалить per-xsts device-check кнопки [x]
 
 Получено из feedback'а Phase 4: кнопка «Проверить с моего устройства» на каждой xsts-карточке становится избыточной после того, как большая кнопка сверху делает то же самое массово. Дублирование путает пользователя.
 
-- [ ] Удалить из `renderCard` блок `deviceCheckHtml` для xsts entries
-- [ ] Удалить функцию `checkXstsFromDevice` из app.js
-- [ ] Удалить CSS `.device-check` и `.device-check-btn`
-- [ ] Обновить help-раздел про «Проверить с моего устройства» — убрать или переписать, ссылаясь на большую кнопку
-- [ ] `node --check site/app.js`
+- [x] Удалить из `renderCard` блок `deviceCheckHtml` для xsts entries
+- [x] Удалить функцию `checkXstsFromDevice` из app.js
+- [x] Удалить CSS `.device-check` и `.device-check-btn`
+- [x] Удалить help-раздел про «Проверить с моего устройства»
+- [x] `node --check site/app.js` ✓
+- [x] Деплой production
 
-**Когда делать:** в начале Phase 5 (реальная логика уже будет покрывать этот кейс) или как мини-коммит после Phase 4 одобрения.
+**Итог:** код стал проще, UX чище. Реальная логика появится в Phase 5 в большой кнопке сверху.
 
 ## Фаза 5: Frontend — логика проверки [ ]
 
@@ -424,20 +425,37 @@ _(заполняется после завершения фазы)_
 - [x] **Блокировка body-scroll при открытой модалке** — `lockBodyScroll()` / `unlockBodyScroll()`, решает iOS-баг «первое касание мимо контента начинает скроллить фон»
 - [x] **Универсальный `closeModal(id)` helper** — все кнопки закрытия модалок теперь через него
 
-## Phase 4.6 mini — checker.py enrichment [ ]
+## Phase 4.6 mini — checker.py enrichment [x]
 
 Получено из feedback'а Phase 4: один IP может работать и как DNS, и как xsts target. Сейчас checker.py тестирует DNS только на DNS-функциональность, а xsts только на HTTPS-reachability — то есть упускает двойное использование.
 
 ### Задачи
-- [ ] В `checker.py` для каждого dns_pair entry дополнительно проверять TCP connect на 443 (переиспользовать существующий код `check_xsts_ip`)
-- [ ] Если отвечает — создавать отдельный xsts_ip entry с тем же primary_dns, но с `sources=['derived_from_dns']` (чтобы видно было происхождение)
-- [ ] Обратный случай проверять не обязательно (xsts IPs обычно не работают как DNS)
-- [ ] Запустить GH Action вручную → проверить что `31.129.110.240` появился в xsts_ip списке как сайд-эффект проверки `45.90.33.120`
-- [ ] Проверить количество уникальных xsts IPs после enrichment
+- [x] В `__main__.py` добавить enrichment loop после xsts check
+- [x] Для каждого dns_pair с status `unsafe`/`working` тестировать TCP/443 на ДВА адреса:
+  - [x] сам `primary_dns` (DNS-сервер может крутить ещё и HTTPS-прокси)
+  - [x] `resolved_ip` (конечная цель куда DNS направляет xsts)
+- [x] Строгий фильтр: enrich только подтверждённые bypass DNS (исключаем `not_working`/`timeout`/`error`/`unchecked`) — защита от ложных положительных вроде 8.8.8.8/1.1.1.1/84.200.67.80 (у них тоже есть веб-сайт на 443, но они не xsts proxy)
+- [x] Создавать xsts_ip запись с `sources=['derived_from_dns']` для отслеживания происхождения
+- [x] Идемпотентность: на повторных запусках обновлять, не дублировать (через generate_method_id + existing_by_id check)
+- [x] Локальный тест: 7 unsafe DNS → 9 derived xsts (включая `31.129.110.240` и `87.228.47.196`)
+- [x] Идемпотентность подтверждена: повторный запуск → 0 added, 12 skipped (xsts check loop сам обновляет dns_check у derived записей)
+- [x] Обновить GH workflow `update.yml` чтобы коммитил `site/data.json` обратно в репо (+ `paths-ignore` для избежания рекурсии, +`contents: write` permission)
+- [x] Деплой production → проверка что 9 derived xsts видны на проде
 
 ### Что изменится (для приёмки)
-Было: `data.json` имеет ~15 xsts IPs, все пришли из источников, которые явно указали «IP для роутера».
-Стало: `data.json` имеет больше xsts IPs — добавились те DNS, которые также отвечают на HTTPS-порту. Пользователи с router-setup видят больше вариантов для подмены xsts.
+Было: `data.json` имеет 15 xsts IPs, все пришли из источников, которые явно указали «IP для роутера». `31.129.110.240` сидит во вкладке DNS IPv4 как ручная запись, в xsts его нет.
+Стало: `data.json` имеет 24 xsts IPs (15 sources + 9 derived). `31.129.110.240` появился в xsts вкладке как `derived_from_dns`. Также добавился `87.228.47.196` (общий target IP для нескольких bypass DNS) и другие proxy IPs.
+
+### Итог реализации
+**Что сделано:**
+- `src/__main__.py` — добавлен enrichment loop с helper-функцией `_try_add_derived_xsts(ip)`
+- `.github/workflows/update.yml` — добавлен auto-commit `site/data.json` для синхронизации с Vercel
+- `site/data.json` — обновлён вручную свежими данными (содержит 9 derived entries)
+
+**Что НЕ работает в энричменте (false negative — приемлемо):**
+- DNS которые НЕ прошли наш bypass-тест из-за timeout/error (например Russian-only прокси, недоступные из GH Actions). Их браузерная проверка v1.0.6 может всё равно подсветить как доступные у юзера в РФ — это нормально.
+
+**Известные проблемы:** нет.
 
 ## Backlog — мелкие UX-улучшения (после v1.0.6)
 
