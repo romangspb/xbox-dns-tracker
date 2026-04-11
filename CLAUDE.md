@@ -46,25 +46,36 @@ xbox-dns-tracker/
 2. **Автоматизация** — парсинг и обновление без ручного труда
 3. **Актуальность** — никаких мёртвых DNS, входной фильтр по давности (2 мес.), неактивные помечаются, при повторном появлении — флаг "перепроверить"
 
-## Стек (после ресерча)
+## Стек
 
-- **Парсер**: Python 3.12+ (httpx, BeautifulSoup4, dnspython)
-- **Данные**: JSON-файлы в репозитории (data.json, statuses.json) — SQLite/Supabase overkill для 5 пользователей
+- **Парсер + чекер**: Python 3.12+ (httpx, BeautifulSoup4, dnspython)
+- **Данные**: JSON-файлы в репозитории (`site/data.json` для фронта, `data/data.json` для парсера)
 - **Фронтенд**: статичный HTML/CSS/JS (без фреймворков)
-- **Хостинг**: GitHub Pages + GitHub Actions
+- **Хостинг**: с v1.0.6 — **Vercel** (`xbox-dns-tracker.vercel.app`) + GitHub Pages как запасной (`romangspb.github.io/xbox-dns-tracker/`)
+- **Vercel function**: `api/resolve.mjs` (Node.js, DNS-резолв через `dns.Resolver`) — пока не используется фронтом, но задеплоена на случай возрождения reachability checker
+- **Auto-deploy**: GH Actions запускает парсер ежедневно (cron 4:37 UTC), коммитит свежий `site/data.json` обратно в main → Vercel auto-deploy + GH Pages deploy
 - **Будущее (v1.1)**: aiogram (Telegram-бот)
+
+## Production URLs
+
+- **Главный**: https://xbox-dns-tracker.vercel.app/ (с v1.0.6, public, без авторизации)
+- **Запасной**: https://romangspb.github.io/xbox-dns-tracker/ (старый GH Pages деплой, продолжает работать)
+- **Vercel API** (пока не используется фронтом): https://xbox-dns-tracker.vercel.app/api/resolve?dns=X.X.X.X
 
 ## Версии продукта
 
 - **v0.1** ✅ — Парсер + нормализованные JSON-данные (дедупликация, классификация, фильтр по давности)
 - **v0.2** ✅ — Автопроверка DNS (резолв xsts.auth.xboxlive.com — нестандартный IP = bypass работает)
 - **v1.0** ✅ — Веб-страничка + GitHub Actions + персональный трекинг + фильтры + меню помощи
-- **v1.0.2** — Обогащение источников (новые DNS, форумы, обратный поиск по известным IP)
-- **v1.0.3** — Проверка xsts IP (валидация работоспособности IP для роутера)
-- **v1.0.4** — Проверка DNS с телефона пользователя (ресёрч: можно ли из браузера?)
-- **v1.0.5** — Доработка IPv6 (проверка статуса, понятные пояснения)
-- **v1.1** — Telegram-бот (уведомления + кнопка "Обновить сейчас")
+- **v1.0.2** ✅ — Обогащение источников (xboxstor.ru, sport24.ru, teletype.in, фильтр мусорных IP, дедупликация)
+- **v1.0.3** ✅ — Проверка xsts IP (TCP connect на 443, статусы reachable/unreachable/timeout)
+- **v1.0.4** ✅ — Проверка xsts IP с устройства пользователя (per-card device-check) — *удалена в Phase 4.7 v1.0.6*
+- **v1.0.5** ✅ — IPv6 handling (метка `ipv6_unchecked` + пояснения для не-технарей)
+- **v1.0.6 MVP** ✅ — Миграция деплоя на Vercel + enrichment xsts списка (24 вместо 15) + обновлённое help-меню с честным disclaimer статусов. **Reachability checker отложен** — browser-side fetch не работает для xsts proxies (TLS handshake), серверный probe = бесполезное дублирование. Код под флагом `REACH_CHECK_ENABLED=false` в `site/app.js`, ждёт нового подхода
+- **v1.0.7** 🔍 в ресёрче — как реализовать «работает у тебя»-проверку с устройства пользователя без браузерного fetch (PWA, iOS Shortcuts, native app, manual settings tweaks). Отдельный план будет
+- **v1.1** — Telegram-бот (уведомления + кнопка «Обновить сейчас»)
 - **v1.2** — Проверка доступности Xbox Cloud Gaming (xCloud)
+- **v2.0 черновик** — поиск DNS/IP, краудсорсинг статусов с time-decay (см. `plans/2026-04-11-reachability-check-v106.md` секция «Черновик v2.0»)
 
 ## Папка `.business/`
 
