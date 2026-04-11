@@ -62,6 +62,11 @@ xbox-dns-tracker/
 - **Запасной**: https://romangspb.github.io/xbox-dns-tracker/ (старый GH Pages деплой, продолжает работать)
 - **Vercel API** (пока не используется фронтом): https://xbox-dns-tracker.vercel.app/api/resolve?dns=X.X.X.X
 
+## ⚠️ NB для следующей сессии
+
+- **Анонс для друзей готов** в `.business/анонс-для-друзей.md` — две версии (короткая и ещё короче), готов к копированию в Telegram. Roman должен отправить друзьям. **Напомнить при первом сообщении новой сессии.**
+- **Ресёрч v1.0.7 готов** в `thoughts/research/2026-04-11-checker-options.md` — 13 вариантов, рекомендация в TL;DR. Roman должен выбрать направление, после чего создаём план v1.0.7.
+
 ## Версии продукта
 
 - **v0.1** ✅ — Парсер + нормализованные JSON-данные (дедупликация, классификация, фильтр по давности)
@@ -72,7 +77,7 @@ xbox-dns-tracker/
 - **v1.0.4** ✅ — Проверка xsts IP с устройства пользователя (per-card device-check) — *удалена в Phase 4.7 v1.0.6*
 - **v1.0.5** ✅ — IPv6 handling (метка `ipv6_unchecked` + пояснения для не-технарей)
 - **v1.0.6 MVP** ✅ — Миграция деплоя на Vercel + enrichment xsts списка (24 вместо 15) + обновлённое help-меню с честным disclaimer статусов. **Reachability checker отложен** — browser-side fetch не работает для xsts proxies (TLS handshake), серверный probe = бесполезное дублирование. Код под флагом `REACH_CHECK_ENABLED=false` в `site/app.js`, ждёт нового подхода
-- **v1.0.7** 🔍 в ресёрче — как реализовать «работает у тебя»-проверку с устройства пользователя без браузерного fetch (PWA, iOS Shortcuts, native app, manual settings tweaks). Отдельный план будет
+- **v1.0.7** 🔍 в ресёрче — **ресёрч-артефакт готов: [thoughts/research/2026-04-11-checker-options.md](thoughts/research/2026-04-11-checker-options.md)**. 13 вариантов с разделением iPhone vs Mac/Win, рекомендация: Guided Manual Wizard (iPhone) + Multi-region server probe + RU VPS. Ждёт решения Roman'а по выбору направления и финального плана v1.0.7
 - **v1.1** — Telegram-бот (уведомления + кнопка «Обновить сейчас»)
 - **v1.2** — Проверка доступности Xbox Cloud Gaming (xCloud)
 - **v2.0 черновик** — поиск DNS/IP, краудсорсинг статусов с time-decay (см. `plans/2026-04-11-reachability-check-v106.md` секция «Черновик v2.0»)
