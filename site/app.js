@@ -38,6 +38,26 @@ const DIFFICULTY_ORDER = ['easy', 'medium', 'hard'];
 // Фильтры
 let filterType = 'dns_v4';            // 'dns_v4' | 'dns_v6' | 'xsts'
 let filterStatuses = new Set(['all']); // мульти-выбор: Set of statuses или 'all'
+let filterReachable = false;          // показывать только reachable (Phase 4)
+
+// === v1.0.6: reachability check ===
+// MVP: фича выключена через флаг. Browser-side fetch не работает для xsts proxies
+// (TLS handshake падает на самоподписанных/некорректных сертификатах).
+// Серверный probe = бесполезное дублирование checker.py (та же сеть Vercel ~ GH Actions,
+// нет «реальной сети пользователя»). Решение пользователя 2026-04-11: убрать с фронта,
+// весь код оставить под флагом, искать новый подход (см. v1.0.6 plan: research phase).
+// Чтобы вернуть — поставь true, всё снова появится.
+const REACH_CHECK_ENABLED = false;
+
+// reachabilityResults: { methodId: 'reachable' | 'unreachable' | 'unknown' } или null
+let reachabilityResults = null;
+let lastCheckAt = null;
+let lastResolveFailures = 0;     // сколько DNS не удалось разрешить через /api/resolve
+let lastIpv6Skipped = 0;         // сколько IPv6 пропущено
+let checkInProgress = false;
+const REACH_CACHE_TTL_MS = 60 * 60 * 1000; // 1 час
+const PROBE_TIMEOUT_MS = 5000;
+const RESOLVE_API = '/api/resolve';
 
 // --- Хранилище ---
 
@@ -77,6 +97,38 @@ function getMethodIPVersion(method) {
 
 // --- Модальные окна ---
 
+// Блокировка скролла body пока открыта модалка — решает iOS баг
+// «первое касание мимо контента в модалке начинает скроллить фон»
+function lockBodyScroll() {
+  document.body.style.overflow = 'hidden';
+  document.body.style.touchAction = 'none';
+}
+
+function unlockBodyScroll() {
+  document.body.style.overflow = '';
+  document.body.style.touchAction = '';
+}
+
+// Универсальный helper: закрыть модалку и разблокировать скролл
+function closeModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (!modal) return;
+  modal.classList.remove('active');
+  unlockBodyScroll();
+}
+
+// Закрытие модалки по клику на overlay (но не на content)
+function bindOverlayClose(modalId) {
+  const modal = document.getElementById(modalId);
+  if (!modal) return;
+  modal.addEventListener('click', (e) => {
+    // Закрываем только если клик был в сам overlay, а не в его содержимое
+    if (e.target === modal) {
+      closeModal(modalId);
+    }
+  });
+}
+
 function showUserPicker() {
   const modal = document.getElementById('user-modal');
   const picker = document.getElementById('user-picker');
@@ -87,15 +139,18 @@ function showUserPicker() {
     btn.onclick = () => {
       setCurrentUser(name);
       modal.classList.remove('active');
+      unlockBodyScroll();
       renderAll();
     };
     picker.appendChild(btn);
   });
   modal.classList.add('active');
+  lockBodyScroll();
 }
 
 function showHelp() {
   document.getElementById('help-modal').classList.add('active');
+  lockBodyScroll();
 }
 
 function showStatusPopup(status, el, e) {
@@ -234,13 +289,20 @@ function renderFilters() {
       { key: 'unchecked', label: 'Не проверен' },
     ];
 
-    const statusBtns = statusOptions
+    let statusBtns = statusOptions
       .filter(o => o.key === 'all' || statusCounts[o.key])
       .map(o => {
         const cnt = o.key === 'all' ? typed.length : (statusCounts[o.key] || 0);
         const active = filterStatuses.has(o.key) ? ' active' : '';
         return `<button class="status-filter-btn${active}" onclick="toggleStatusFilter('${o.key}')">${o.label} <span class="filter-count">${cnt}</span></button>`;
       }).join('');
+
+    // v1.0.6: фильтр «только доступные» — виден только после первой проверки (выключен через флаг)
+    if (REACH_CHECK_ENABLED && reachabilityResults) {
+      const reachableInType = typed.filter(m => reachabilityResults[m.id] === 'reachable').length;
+      const active = filterReachable ? ' active' : '';
+      statusBtns += `<button class="status-filter-btn${active}" onclick="toggleReachableFilter()">✓ Доступные <span class="filter-count">${reachableInType}</span></button>`;
+    }
 
     statusHtml = `<div class="status-filters">${statusBtns}</div>`;
   }
@@ -265,6 +327,7 @@ function renderAll() {
   });
 
   renderFilters();
+  if (REACH_CHECK_ENABLED) renderReachabilityResult();
 
   // Фильтрация
   let methods;
@@ -279,6 +342,11 @@ function renderAll() {
   // Фильтр по статусу
   if (!filterStatuses.has('all')) {
     methods = methods.filter(m => filterStatuses.has(m.dns_check?.status || 'unchecked'));
+  }
+
+  // v1.0.6: фильтр «только доступные» (по результатам проверки доступа, выключен через флаг)
+  if (REACH_CHECK_ENABLED && filterReachable && reachabilityResults) {
+    methods = methods.filter(m => reachabilityResults[m.id] === 'reachable');
   }
 
   // Сортировка
@@ -353,6 +421,19 @@ function renderCard(method, currentUser) {
   // Статус-бейдж (кликабельный)
   let statusHtml = `<span class="dns-status ${checkStatus}" onclick="showStatusPopup('${checkStatus}', this, event)">${statusLabel}</span>`;
 
+  // v1.0.6: метка доступности из реальной сети пользователя (выключена через флаг)
+  let reachMarkHtml = '';
+  if (REACH_CHECK_ENABLED && reachabilityResults) {
+    const r = reachabilityResults[method.id];
+    if (r === 'reachable') {
+      reachMarkHtml = '<span class="reach-mark reach-ok" title="Вероятно сработает из твоей сети — попробуй на Xbox">✓</span>';
+    } else if (r === 'unreachable') {
+      reachMarkHtml = '<span class="reach-mark reach-fail" title="Точно не сработает из твоей сети">✗</span>';
+    } else if (r === 'unknown') {
+      reachMarkHtml = '<span class="reach-mark reach-unknown" title="Не хватило данных для проверки">?</span>';
+    }
+  }
+
   let ipHtml = '';
   if (method.primary_dns) {
     ipHtml += `
@@ -390,18 +471,9 @@ function renderCard(method, currentUser) {
   const summaryText = worksCount > 0 ? `${worksCount}/${USERS.length}` : '';
   const recommendedBadge = isRecommended ? '<span class="recommended-badge">★</span>' : '';
 
-  // Кнопка "Проверить с моего устройства" (только для xsts)
-  let deviceCheckHtml = '';
-  if (isXsts && method.primary_dns) {
-    deviceCheckHtml = `
-      <div class="device-check" data-ip="${method.primary_dns}">
-        <button class="device-check-btn" onclick="checkXstsFromDevice('${method.primary_dns}', this)">Проверить с моего устройства</button>
-      </div>
-    `;
-  }
-
   card.innerHTML = `
     <div class="dns-card-header">
+      ${reachMarkHtml}
       ${recommendedBadge}
       ${statusHtml}
     </div>
@@ -409,7 +481,6 @@ function renderCard(method, currentUser) {
     <div class="dns-meta">
       <span class="dns-sources">${sourceCount} ${sourceCount === 1 ? 'источник' : sourceCount < 5 ? 'источника' : 'источников'}</span>
     </div>
-    ${deviceCheckHtml}
     <div class="user-statuses">
       ${circlesHtml}
       <span class="status-summary">${summaryText}</span>
@@ -419,36 +490,281 @@ function renderCard(method, currentUser) {
   return card;
 }
 
-// --- Проверка xsts IP с устройства пользователя ---
+// --- v1.0.6: массовая проверка доступа к Xbox ---
 
-async function checkXstsFromDevice(ip, btn) {
-  btn.disabled = true;
-  btn.textContent = 'Проверяю...';
-  btn.className = 'device-check-btn checking';
+function hasVpnAcknowledged() {
+  return localStorage.getItem('xbox_vpn_ack') === 'true';
+}
 
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 5000);
+function showVpnWarning() {
+  document.getElementById('vpn-modal').classList.add('active');
+  lockBodyScroll();
+}
 
+function acknowledgeVpn() {
+  localStorage.setItem('xbox_vpn_ack', 'true');
+  closeModal('vpn-modal');
+  // После подтверждения сразу запускаем проверку
+  runFullCheck();
+}
+
+function loadReachabilityCache() {
   try {
-    // no-cors режим: браузер пошлёт запрос, но не даст читать ответ.
-    // Нам это и не нужно — важен сам факт: достучались или нет.
+    const raw = localStorage.getItem('xbox_reach_results');
+    if (!raw) return;
+    const parsed = JSON.parse(raw);
+    if (!parsed || !parsed.timestamp || !parsed.results) return;
+    if (Date.now() - parsed.timestamp < REACH_CACHE_TTL_MS) {
+      reachabilityResults = parsed.results;
+      lastCheckAt = parsed.timestamp;
+      lastResolveFailures = parsed.resolveFailures || 0;
+      lastIpv6Skipped = parsed.ipv6Skipped || 0;
+    }
+  } catch {}
+}
+
+function saveReachabilityCache() {
+  if (!reachabilityResults || !lastCheckAt) return;
+  localStorage.setItem('xbox_reach_results', JSON.stringify({
+    timestamp: lastCheckAt,
+    results: reachabilityResults,
+    resolveFailures: lastResolveFailures,
+    ipv6Skipped: lastIpv6Skipped,
+  }));
+}
+
+// Делает свежий резолв DNS через нашу Vercel-функцию.
+// Возвращает resolved_ip или null если функция не ответила (timeout/network).
+async function fetchResolveDns(dns) {
+  try {
+    const resp = await fetch(`${RESOLVE_API}?dns=${encodeURIComponent(dns)}`, {
+      cache: 'no-store',
+    });
+    if (!resp.ok) return null;
+    const data = await resp.json();
+    return data.resolved_ip || null;
+  } catch {
+    return null;
+  }
+}
+
+// Пробует достучаться до IP по HTTPS с no-cors fetch.
+// Возвращает true если хост ответил (любой response, opaque), false при таймауте/ошибке.
+async function probeIp(ip) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), PROBE_TIMEOUT_MS);
+  try {
     await fetch(`https://${ip}/`, {
       mode: 'no-cors',
       signal: controller.signal,
       cache: 'no-store',
     });
+    return true;
+  } catch {
+    return false;
+  } finally {
     clearTimeout(timeoutId);
-    btn.textContent = '✓ Доступен с твоего устройства';
-    btn.className = 'device-check-btn success';
-  } catch (e) {
-    clearTimeout(timeoutId);
-    if (e.name === 'AbortError') {
-      btn.textContent = '✗ Не ответил за 5 сек';
-    } else {
-      btn.textContent = '✗ Недоступен из твоей сети';
-    }
-    btn.className = 'device-check-btn failed';
   }
+}
+
+// Главный оркестратор Phase 5: реальная проверка доступности всех путей
+// к Xbox из сети пользователя.
+async function runFullCheck(forceRefresh = false) {
+  if (checkInProgress) return;
+
+  // Первый клик — показать предупреждение про VPN/router
+  if (!hasVpnAcknowledged()) {
+    showVpnWarning();
+    return;
+  }
+
+  // Свежий кэш — не трогаем (кроме forceRefresh)
+  if (!forceRefresh && reachabilityResults && lastCheckAt
+      && Date.now() - lastCheckAt < REACH_CACHE_TTL_MS) {
+    return;
+  }
+
+  if (!appData) return;
+
+  checkInProgress = true;
+  const btn = document.getElementById('check-all-btn');
+  btn.disabled = true;
+  btn.classList.add('checking');
+
+  const setProgress = (label) => {
+    btn.innerHTML = `<span class="check-all-spinner"></span><span>${label}</span>`;
+  };
+  setProgress('Готовлю проверку...');
+
+  try {
+    // Шаг 1: классификация методов
+    // Для каждого метода определяем, какой target IP пробовать (или пропустить)
+    const methods = appData.methods.filter(m => m.active !== false);
+    const methodTarget = {};      // methodId -> target IP или null (пропустить → unknown)
+    const dnsToResolve = [];      // [{id, dns}] — DNS без cached resolved_ip
+    let ipv6Skipped = 0;
+    let notWorkingSkipped = 0;
+
+    for (const m of methods) {
+      if (m.type === 'xsts_ip') {
+        methodTarget[m.id] = m.primary_dns;
+        continue;
+      }
+      if (m.type !== 'dns_pair') {
+        methodTarget[m.id] = null;
+        continue;
+      }
+      // dns_pair
+      if (isIPv6(m.primary_dns)) {
+        methodTarget[m.id] = null;
+        ipv6Skipped++;
+        continue;
+      }
+      const dnsCheck = m.dns_check || {};
+      // not_working DNS возвращает Azure IP — bypass не работает в принципе.
+      // Пропускаем (mark as unknown), статус-бейдж «Не обходит» уже даёт сигнал.
+      if (dnsCheck.status === 'not_working') {
+        methodTarget[m.id] = null;
+        notWorkingSkipped++;
+        continue;
+      }
+      // Есть кэш target IP — пробуем его
+      if (dnsCheck.resolved_ip) {
+        methodTarget[m.id] = dnsCheck.resolved_ip;
+        continue;
+      }
+      // Нет кэша — нужен свежий резолв через Vercel
+      dnsToResolve.push({ id: m.id, dns: m.primary_dns });
+    }
+
+    // Шаг 2: параллельный свежий резолв для DNS без кэша
+    let resolveFailed = 0;
+    if (dnsToResolve.length > 0) {
+      setProgress(`Резолвлю ${dnsToResolve.length} DNS...`);
+      let resolveDone = 0;
+      await Promise.all(dnsToResolve.map(async ({ id, dns }) => {
+        const resolved = await fetchResolveDns(dns);
+        if (resolved) {
+          methodTarget[id] = resolved;
+        } else {
+          methodTarget[id] = null;
+          resolveFailed++;
+        }
+        resolveDone++;
+        setProgress(`Резолвлю DNS... ${resolveDone} / ${dnsToResolve.length}`);
+      }));
+    }
+
+    // Шаг 3: дедупликация target IPs
+    const uniqueTargets = [...new Set(Object.values(methodTarget).filter(t => t))];
+
+    // Шаг 4: параллельный probe всех уникальных target IPs
+    const targetResults = {};
+    if (uniqueTargets.length > 0) {
+      setProgress(`Проверяю ${uniqueTargets.length} путей...`);
+      let probeDone = 0;
+      await Promise.all(uniqueTargets.map(async (ip) => {
+        const reachable = await probeIp(ip);
+        targetResults[ip] = reachable ? 'reachable' : 'unreachable';
+        probeDone++;
+        setProgress(`Проверяю пути... ${probeDone} / ${uniqueTargets.length}`);
+      }));
+    }
+
+    // Шаг 5: маппинг результатов обратно на методы
+    const results = {};
+    for (const m of methods) {
+      const target = methodTarget[m.id];
+      if (!target) {
+        results[m.id] = 'unknown';
+      } else {
+        results[m.id] = targetResults[target] || 'unknown';
+      }
+    }
+
+    reachabilityResults = results;
+    lastCheckAt = Date.now();
+    lastResolveFailures = resolveFailed;
+    lastIpv6Skipped = ipv6Skipped;
+    saveReachabilityCache();
+    renderAll();
+  } catch (err) {
+    // Аварийный fallback — баннер с ошибкой и пустые результаты
+    console.error('runFullCheck failed:', err);
+    setProgress('Ошибка проверки');
+    setTimeout(() => {
+      btn.innerHTML = '<span class="check-all-icon">⚡</span><span class="check-all-text">Попробовать ещё раз</span>';
+    }, 1500);
+  } finally {
+    checkInProgress = false;
+    btn.disabled = false;
+    btn.classList.remove('checking');
+    if (reachabilityResults) {
+      btn.innerHTML = '<span class="check-all-icon">⚡</span><span class="check-all-text">Проверить ещё раз</span>';
+    } else {
+      btn.innerHTML = '<span class="check-all-icon">⚡</span><span class="check-all-text">Проверить мой доступ к Xbox</span>';
+    }
+  }
+}
+
+function renderReachabilityResult() {
+  const el = document.getElementById('reachability-result');
+  if (!reachabilityResults) {
+    el.innerHTML = '';
+    return;
+  }
+
+  const entries = Object.values(reachabilityResults);
+  const total = entries.length;
+  const reachable = entries.filter(r => r === 'reachable').length;
+  const unknown = entries.filter(r => r === 'unknown').length;
+
+  const when = new Date(lastCheckAt).toLocaleTimeString('ru-RU', {
+    hour: '2-digit', minute: '2-digit'
+  });
+
+  const bigClass = reachable === 0 ? 'reach-big zero' : 'reach-big';
+
+  // Раскладка серых "?" — почему они unknown:
+  // - lastIpv6Skipped: IPv6 DNS, мы их не проверяем
+  // - lastResolveFailures: DNS у которых /api/resolve не сработал
+  // - остальное (если есть) — not_working DNS, для них статус-бейдж даёт ответ
+  const unknownNotes = [];
+  if (lastIpv6Skipped > 0) {
+    unknownNotes.push(`${lastIpv6Skipped} IPv6 не проверяется`);
+  }
+  if (lastResolveFailures > 0) {
+    unknownNotes.push(`${lastResolveFailures} DNS не удалось разрешить`);
+  }
+  const unknownHtml = unknownNotes.length > 0
+    ? `<div class="reach-unknown-note">${unknownNotes.join(' · ')}</div>`
+    : '';
+
+  // Главное предупреждение если 0 рабочих
+  const warningHtml = reachable === 0
+    ? `<div class="reach-warning">Ни один путь недоступен из твоей сети. Возможно у тебя включён VPN — выключи и нажми «Обновить». Если без VPN тоже 0 — нужен VPN на роутере для всего трафика к xsts.</div>`
+    : '';
+
+  el.innerHTML = `
+    <div class="reach-aggregate">
+      <div class="reach-numbers">
+        <span class="${bigClass}">${reachable}</span>
+        <span class="reach-small">из ${total}</span>
+      </div>
+      <div class="reach-label">путей доступны из твоей сети</div>
+      ${unknownHtml}
+      ${warningHtml}
+      <div class="reach-meta">
+        <span>Проверено в ${when}</span>
+        <button class="reach-refresh-btn" onclick="runFullCheck(true)">Обновить</button>
+      </div>
+    </div>
+  `;
+}
+
+function toggleReachableFilter() {
+  filterReachable = !filterReachable;
+  renderAll();
 }
 
 // --- Переключение статуса ---
@@ -478,6 +794,26 @@ async function init() {
 
   document.getElementById('change-user').onclick = showUserPicker;
   document.getElementById('help-btn').onclick = showHelp;
+
+  // Help-модалку разрешаем закрывать по клику на overlay (UX-фикс из Phase 4 feedback).
+  // User-picker и VPN-модалку по overlay НЕ закрываем — они требуют осознанного подтверждения.
+  bindOverlayClose('help-modal');
+
+  // v1.0.6: вся reachability-фича выключена через REACH_CHECK_ENABLED флаг.
+  // Скрываем секцию с кнопкой и плейсхолдером результата.
+  if (REACH_CHECK_ENABLED) {
+    document.getElementById('check-all-btn').onclick = () => runFullCheck(false);
+    loadReachabilityCache();
+    if (reachabilityResults) {
+      const btn = document.getElementById('check-all-btn');
+      btn.innerHTML = '<span class="check-all-icon">⚡</span><span class="check-all-text">Проверить ещё раз</span>';
+    }
+  } else {
+    const section = document.getElementById('reachability-section');
+    if (section) section.style.display = 'none';
+    // Чистим протухший кэш мок-результатов из Phase 4 (mock-данные больше не нужны)
+    try { localStorage.removeItem('xbox_reach_results'); } catch {}
+  }
 
   try {
     const resp = await fetch('data.json');

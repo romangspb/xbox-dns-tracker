@@ -173,6 +173,84 @@ def run() -> None:
         xsts_checked += 1
     log.info("Проверено xsts IP: %d уникальных", xsts_checked)
 
+    # v1.0.6 Phase 4.6: enrichment — для каждого подтверждённого bypass DNS
+    # (status=unsafe/working) тестируем как xsts targets ДВА адреса:
+    #   1. сам primary_dns (DNS-сервер может также крутить HTTPS-прокси)
+    #   2. resolved_ip (конечная цель, в которую DNS направляет xsts)
+    # Если на 443 отвечает — создаём независимую xsts_ip запись с
+    # source='derived_from_dns'.
+    #
+    # Строгий фильтр (только unsafe/working) защищает от ложных положительных
+    # типа 8.8.8.8 / 1.1.1.1 / 84.200.67.80 — у публичных DNS-провайдеров есть
+    # веб-сайт на 443, но это не xsts-прокси.
+    #
+    # Идемпотентность: на повторных запусках derived записи уже есть в
+    # final_methods (через merge). В этом случае не дублируем, а обновляем
+    # dns_check у существующей записи.
+    from src.normalizer import generate_method_id
+
+    def _try_add_derived_xsts(candidate_ip: str) -> str:
+        """Тестирует candidate_ip как xsts и добавляет/обновляет запись.
+        Возвращает 'added', 'updated', 'unreachable', 'invalid', 'skipped'."""
+        if not candidate_ip or ":" in candidate_ip or candidate_ip == "0.0.0.0":
+            return "invalid"
+        if candidate_ip in existing_xsts_primary:
+            return "skipped"
+        if candidate_ip in xsts_cache:
+            check_result = xsts_cache[candidate_ip]
+        else:
+            log.info("Enrichment: тестируем %s как xsts", candidate_ip)
+            check_result = check_xsts_ip(candidate_ip)
+            xsts_cache[candidate_ip] = check_result
+        if check_result["status"] != "reachable":
+            return "unreachable"
+        derived_id = generate_method_id("xsts_ip", candidate_ip)
+        if derived_id in existing_by_id:
+            existing_by_id[derived_id]["dns_check"] = check_result
+            existing_by_id[derived_id]["last_seen"] = today
+            return "updated"
+        new_entry = {
+            "id": derived_id,
+            "type": "xsts_ip",
+            "difficulty": "medium",
+            "primary_dns": candidate_ip,
+            "secondary_dns": None,
+            "description": None,
+            "sources": ["derived_from_dns"],
+            "source_urls": [],
+            "first_seen": today,
+            "last_seen": today,
+            "active": True,
+            "recheck": False,
+            "instruction_url": None,
+            "dns_check": check_result,
+        }
+        final_methods.append(new_entry)
+        existing_by_id[derived_id] = new_entry
+        existing_xsts_primary.add(candidate_ip)
+        return "added"
+
+    existing_xsts_primary = {m["primary_dns"] for m in final_methods if m.get("type") == "xsts_ip"}
+    existing_by_id = {m["id"]: m for m in final_methods}
+    counters = {"added": 0, "updated": 0, "unreachable": 0, "invalid": 0, "skipped": 0}
+    # Берём snapshot dns_pair-методов, чтобы итерация была устойчива к
+    # добавлению новых xsts_ip в final_methods через _try_add_derived_xsts.
+    dns_methods_snapshot = [m for m in final_methods if m.get("type") == "dns_pair"]
+    for method in dns_methods_snapshot:
+        dns_status = method.get("dns_check", {}).get("status")
+        if dns_status not in ("unsafe", "working"):
+            continue
+        # 1) сам DNS-сервер как HTTPS proxy
+        counters[_try_add_derived_xsts(method.get("primary_dns"))] += 1
+        # 2) конечная цель резолва (то, во что DNS направляет xsts)
+        resolved = method.get("dns_check", {}).get("resolved_ip")
+        if resolved and resolved != method.get("primary_dns"):
+            counters[_try_add_derived_xsts(resolved)] += 1
+    log.info(
+        "Enrichment: добавлено %d, обновлено %d, недоступно %d, пропущено %d (уже есть)",
+        counters["added"], counters["updated"], counters["unreachable"], counters["skipped"]
+    )
+
     data: DataFile = {
         "updated_at": now,
         "methods": final_methods,

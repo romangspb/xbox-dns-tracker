@@ -266,51 +266,6 @@ main {
 .dns-status.unreachable { background: rgba(239, 83, 80, 0.15); color: var(--danger); }
 .dns-status.ipv6_unchecked { background: rgba(108, 180, 238, 0.12); color: var(--accent); }
 
-/* Кнопка проверки xsts IP с устройства */
-.device-check {
-  margin-top: 10px;
-}
-
-.device-check-btn {
-  width: 100%;
-  background: rgba(108, 180, 238, 0.1);
-  color: var(--accent);
-  border: 1px solid rgba(108, 180, 238, 0.25);
-  border-radius: 10px;
-  padding: 10px 12px;
-  font-size: 13px;
-  font-family: inherit;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-
-.device-check-btn:active {
-  transform: scale(0.98);
-}
-
-.device-check-btn:disabled {
-  cursor: default;
-}
-
-.device-check-btn.checking {
-  background: rgba(117, 117, 117, 0.15);
-  color: var(--text-secondary);
-  border-color: transparent;
-}
-
-.device-check-btn.success {
-  background: rgba(76, 175, 80, 0.15);
-  color: var(--success);
-  border-color: rgba(76, 175, 80, 0.3);
-}
-
-.device-check-btn.failed {
-  background: rgba(239, 83, 80, 0.12);
-  color: var(--danger);
-  border-color: rgba(239, 83, 80, 0.25);
-}
-
 /* IP-блок для копирования */
 .dns-ip-row {
   display: flex;
@@ -600,4 +555,215 @@ footer {
 /* Кликабельный статус */
 .dns-status {
   cursor: pointer;
+}
+
+/* === v1.0.6: Большая кнопка проверки доступа === */
+
+#reachability-section {
+  padding: 0 12px;
+  margin-bottom: 12px;
+}
+
+.check-all-btn {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(108, 180, 238, 0.18), rgba(108, 180, 238, 0.08));
+  color: var(--accent);
+  border: 1.5px solid rgba(108, 180, 238, 0.35);
+  border-radius: 14px;
+  padding: 18px 16px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 0.1s, background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  letter-spacing: 0.2px;
+}
+
+.check-all-btn:active {
+  transform: scale(0.98);
+  background: rgba(108, 180, 238, 0.25);
+}
+
+.check-all-btn:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.check-all-btn.checking {
+  background: rgba(117, 117, 117, 0.12);
+  color: var(--text-secondary);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.check-all-icon {
+  font-size: 20px;
+}
+
+/* Спиннер для loading */
+.check-all-spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(108, 180, 238, 0.2);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* === Агрегированный результат === */
+
+.reach-aggregate {
+  margin-top: 12px;
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 16px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.reach-numbers {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.reach-big {
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--success);
+}
+
+.reach-big.zero {
+  color: var(--danger);
+}
+
+.reach-small {
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+
+.reach-label {
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.reach-unknown-note {
+  text-align: center;
+  font-size: 12px;
+  color: var(--warning);
+  margin-top: 6px;
+}
+
+.reach-warning {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(239, 83, 80, 0.08);
+  border: 1px solid rgba(239, 83, 80, 0.2);
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--danger);
+  text-align: center;
+}
+
+.reach-meta {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.reach-refresh-btn {
+  background: none;
+  border: 1px solid rgba(108, 180, 238, 0.3);
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.reach-refresh-btn:active {
+  background: rgba(108, 180, 238, 0.15);
+}
+
+/* === Метки на карточках === */
+
+.reach-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 700;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+
+.reach-mark.reach-ok {
+  background: rgba(76, 175, 80, 0.18);
+  color: var(--success);
+  border: 1px solid rgba(76, 175, 80, 0.35);
+}
+
+.reach-mark.reach-fail {
+  background: rgba(239, 83, 80, 0.15);
+  color: var(--danger);
+  border: 1px solid rgba(239, 83, 80, 0.3);
+}
+
+.reach-mark.reach-unknown {
+  background: rgba(117, 117, 117, 0.18);
+  color: var(--text-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* В help-модалке знаки поменьше */
+.help-section .reach-mark {
+  width: 18px;
+  height: 18px;
+  font-size: 11px;
+}
+
+/* === VPN-модалка === */
+
+.modal-vpn {
+  max-width: 360px;
+  text-align: left;
+}
+
+.modal-vpn h2 {
+  text-align: center;
+  color: var(--warning);
+}
+
+.vpn-content {
+  margin-bottom: 16px;
+}
+
+.vpn-content p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  margin-bottom: 10px;
+}
+
+.vpn-content strong {
+  color: var(--text);
 }
