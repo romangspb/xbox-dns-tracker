@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-04-16T09:07:10+00:00",
+  "updated_at": "2026-04-17T09:05:53+00:00",
   "methods": [
     {
       "id": "xst-05428d35",
@@ -14,14 +14,14 @@
       "source_urls": [
         "https://github.com/chipslays/0x80a40401"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:08:48+00:00",
+        "checked_at": "2026-04-17T09:07:39+00:00",
         "resolved_ip": null
       }
     },
@@ -40,14 +40,14 @@
         "https://github.com/chipslays/0x80a40401",
         "https://teletype.in/@faqi/Nastroyka-DNS-dlya-Xbox-Series-X-S-v-Rossii-2025-o"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:08:53+00:00",
+        "checked_at": "2026-04-17T09:07:44+00:00",
         "resolved_ip": null
       }
     },
@@ -64,14 +64,14 @@
       "source_urls": [
         "https://github.com/chipslays/0x80a40401"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:08:58+00:00",
+        "checked_at": "2026-04-17T09:07:49+00:00",
         "resolved_ip": null
       }
     },
@@ -88,14 +88,14 @@
       "source_urls": [
         "https://github.com/chipslays/0x80a40401"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:09:03+00:00",
+        "checked_at": "2026-04-17T09:07:54+00:00",
         "resolved_ip": null
       }
     },
@@ -112,14 +112,14 @@
       "source_urls": [
         "https://github.com/chipslays/0x80a40401"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:09:08+00:00",
+        "checked_at": "2026-04-17T09:07:59+00:00",
         "resolved_ip": null
       }
     },
@@ -136,14 +136,14 @@
       "source_urls": [
         "https://github.com/chipslays/0x80a40401"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:09:13+00:00",
+        "checked_at": "2026-04-17T09:08:04+00:00",
         "resolved_ip": null
       }
     },
@@ -160,14 +160,14 @@
       "source_urls": [
         "https://github.com/chipslays/0x80a40401"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:09:18+00:00",
+        "checked_at": "2026-04-17T09:08:09+00:00",
         "resolved_ip": null
       }
     },
@@ -184,14 +184,14 @@
       "source_urls": [
         "https://github.com/chipslays/0x80a40401"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:09:23+00:00",
+        "checked_at": "2026-04-17T09:08:14+00:00",
         "resolved_ip": null
       }
     },
@@ -212,14 +212,14 @@
         "https://teletype.in/@faqi/Nastroyka-DNS-dlya-Xbox-Series-X-S-v-Rossii-2025-o",
         "https://sport24.ru/cybersport/article-kak-oboyti-oshibku-regiona-na-xbox"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:09:28+00:00",
+        "checked_at": "2026-04-17T09:08:19+00:00",
         "resolved_ip": null
       }
     },
@@ -236,14 +236,14 @@
       "source_urls": [
         "https://github.com/chipslays/0x80a40401"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:09:33+00:00",
+        "checked_at": "2026-04-17T09:08:24+00:00",
         "resolved_ip": null
       }
     },
@@ -260,14 +260,14 @@
       "source_urls": [
         "https://xbox-news.ru/news/1049425/"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://xbox-news.ru/news/1049425/",
       "dns_check": {
         "status": "reachable",
-        "checked_at": "2026-04-16T09:09:38+00:00",
+        "checked_at": "2026-04-17T09:08:29+00:00",
         "resolved_ip": "164.90.228.248"
       }
     },
@@ -284,14 +284,14 @@
       "source_urls": [
         "https://teletype.in/@faqi/Nastroyka-DNS-dlya-Xbox-Series-X-S-v-Rossii-2025-o"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://teletype.in/@faqi/Nastroyka-DNS-dlya-Xbox-Series-X-S-v-Rossii-2025-o",
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:09:39+00:00",
+        "checked_at": "2026-04-17T09:08:29+00:00",
         "resolved_ip": null
       }
     },
@@ -308,14 +308,14 @@
       "source_urls": [
         "https://teletype.in/@faqi/Nastroyka-DNS-dlya-Xbox-Series-X-S-v-Rossii-2025-o"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://teletype.in/@faqi/Nastroyka-DNS-dlya-Xbox-Series-X-S-v-Rossii-2025-o",
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:09:44+00:00",
+        "checked_at": "2026-04-17T09:08:34+00:00",
         "resolved_ip": null
       }
     },
@@ -332,14 +332,14 @@
       "source_urls": [
         "https://sport24.ru/cybersport/article-kak-oboyti-oshibku-regiona-na-xbox"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://sport24.ru/cybersport/article-kak-oboyti-oshibku-regiona-na-xbox",
       "dns_check": {
         "status": "reachable",
-        "checked_at": "2026-04-16T09:09:49+00:00",
+        "checked_at": "2026-04-17T09:08:39+00:00",
         "resolved_ip": "178.22.122.100"
       }
     },
@@ -356,14 +356,14 @@
       "source_urls": [
         "https://sport24.ru/cybersport/article-kak-oboyti-oshibku-regiona-na-xbox"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://sport24.ru/cybersport/article-kak-oboyti-oshibku-regiona-na-xbox",
       "dns_check": {
         "status": "reachable",
-        "checked_at": "2026-04-16T09:09:50+00:00",
+        "checked_at": "2026-04-17T09:08:39+00:00",
         "resolved_ip": "185.51.200.2"
       }
     },
@@ -379,13 +379,13 @@
       ],
       "source_urls": [],
       "first_seen": "2026-04-10",
-      "last_seen": "2026-04-16",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:07:18+00:00",
+        "checked_at": "2026-04-17T09:06:02+00:00",
         "resolved_ip": null
       }
     },
@@ -405,13 +405,13 @@
         "https://xbox-news.ru/news/1049425/"
       ],
       "first_seen": "2026-02-26",
-      "last_seen": "2026-04-16",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "working",
-        "checked_at": "2026-04-16T09:07:23+00:00",
+        "checked_at": "2026-04-17T09:06:07+00:00",
         "resolved_ip": "87.228.47.196"
       }
     },
@@ -431,13 +431,13 @@
         "https://xbox-news.ru/news/1049425/"
       ],
       "first_seen": "2026-03-13",
-      "last_seen": "2026-04-16",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:07:24+00:00",
+        "checked_at": "2026-04-17T09:06:08+00:00",
         "resolved_ip": null
       }
     },
@@ -457,13 +457,13 @@
         "https://xbox-news.ru/news/1049425/"
       ],
       "first_seen": "2026-03-13",
-      "last_seen": "2026-04-16",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "ipv6_unchecked",
-        "checked_at": "2026-04-16T09:07:30+00:00",
+        "checked_at": "2026-04-17T09:06:14+00:00",
         "resolved_ip": null
       }
     },
@@ -488,13 +488,13 @@
         "https://xbox-news.ru/news/1049425/"
       ],
       "first_seen": "2026-03-17",
-      "last_seen": "2026-04-16",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "working",
-        "checked_at": "2026-04-16T09:07:30+00:00",
+        "checked_at": "2026-04-17T09:06:14+00:00",
         "resolved_ip": "87.228.47.196"
       }
     },
@@ -515,13 +515,13 @@
         "https://xbox-news.ru/news/1049425/"
       ],
       "first_seen": "2026-03-17",
-      "last_seen": "2026-04-16",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "ipv6_unchecked",
-        "checked_at": "2026-04-16T09:07:30+00:00",
+        "checked_at": "2026-04-17T09:06:15+00:00",
         "resolved_ip": null
       }
     },
@@ -542,14 +542,14 @@
         "https://xbox-news.ru/news/1049425/",
         "https://xboxstor.ru/news-xbox/novoe-reshenie-oshibki-0x80a40401-dlya-konsoli-xbox-821"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:07:30+00:00",
+        "checked_at": "2026-04-17T09:06:15+00:00",
         "resolved_ip": null
       }
     },
@@ -570,14 +570,14 @@
         "https://teletype.in/@faqi/Nastroyka-DNS-dlya-Xbox-Series-X-S-v-Rossii-2025-o",
         "https://xbox-news.ru/news/1049425/"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:07:35+00:00",
+        "checked_at": "2026-04-17T09:06:20+00:00",
         "resolved_ip": null
       }
     },
@@ -600,15 +600,15 @@
         "https://teletype.in/@faqi/Nastroyka-DNS-dlya-Xbox-Series-X-S-v-Rossii-2025-o",
         "https://sport24.ru/cybersport/article-kak-oboyti-oshibku-regiona-na-xbox"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
-        "status": "not_working",
-        "checked_at": "2026-04-16T09:07:41+00:00",
-        "resolved_ip": "20.201.200.49"
+        "status": "timeout",
+        "checked_at": "2026-04-17T09:06:25+00:00",
+        "resolved_ip": null
       }
     },
     {
@@ -632,14 +632,14 @@
         "https://xboxstor.ru/news-xbox/novoe-reshenie-oshibki-0x80a40401-dlya-konsoli-xbox-821",
         "https://teletype.in/@faqi/Nastroyka-DNS-dlya-Xbox-Series-X-S-v-Rossii-2025-o"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:07:41+00:00",
+        "checked_at": "2026-04-17T09:06:31+00:00",
         "resolved_ip": null
       }
     },
@@ -662,14 +662,14 @@
         "https://xbox-news.ru/news/1049425/",
         "https://sport24.ru/cybersport/article-kak-oboyti-oshibku-regiona-na-xbox"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:07:46+00:00",
+        "checked_at": "2026-04-17T09:06:36+00:00",
         "resolved_ip": null
       }
     },
@@ -686,14 +686,14 @@
       "source_urls": [
         "https://xbox-news.ru/news/1049425/"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://xbox-news.ru/news/1049425/",
       "dns_check": {
-        "status": "working",
-        "checked_at": "2026-04-16T09:07:52+00:00",
+        "status": "unsafe",
+        "checked_at": "2026-04-17T09:06:42+00:00",
         "resolved_ip": "87.228.47.196"
       }
     },
@@ -710,14 +710,14 @@
       "source_urls": [
         "https://xbox-news.ru/news/1049425/"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://xbox-news.ru/news/1049425/",
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:07:52+00:00",
+        "checked_at": "2026-04-17T09:06:43+00:00",
         "resolved_ip": null
       }
     },
@@ -738,14 +738,14 @@
         "https://sport24.ru/cybersport/article-kak-oboyti-oshibku-regiona-na-xbox",
         "https://xboxstor.ru/news-xbox/novoe-reshenie-oshibki-0x80a40401-dlya-konsoli-xbox-821"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://xbox-news.ru/news/1049425/",
       "dns_check": {
-        "status": "working",
-        "checked_at": "2026-04-16T09:07:58+00:00",
+        "status": "unsafe",
+        "checked_at": "2026-04-17T09:06:48+00:00",
         "resolved_ip": "31.129.110.240"
       }
     },
@@ -768,14 +768,14 @@
         "https://xboxstor.ru/news-xbox/novoe-reshenie-oshibki-0x80a40401-dlya-konsoli-xbox-821",
         "https://sport24.ru/cybersport/article-kak-oboyti-oshibku-regiona-na-xbox"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://xbox-news.ru/news/1049425/",
       "dns_check": {
         "status": "working",
-        "checked_at": "2026-04-16T09:07:58+00:00",
+        "checked_at": "2026-04-17T09:06:48+00:00",
         "resolved_ip": "87.228.47.196"
       }
     },
@@ -792,14 +792,14 @@
       "source_urls": [
         "https://xbox-news.ru/news/1049425/"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://xbox-news.ru/news/1049425/",
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:07:59+00:00",
+        "checked_at": "2026-04-17T09:06:49+00:00",
         "resolved_ip": null
       }
     },
@@ -818,14 +818,14 @@
         "https://xbox-news.ru/news/1049425/",
         "https://sport24.ru/cybersport/article-kak-oboyti-oshibku-regiona-na-xbox"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://xbox-news.ru/news/1049425/",
       "dns_check": {
-        "status": "working",
-        "checked_at": "2026-04-16T09:08:04+00:00",
+        "status": "unsafe",
+        "checked_at": "2026-04-17T09:06:54+00:00",
         "resolved_ip": "95.216.232.133"
       }
     },
@@ -844,14 +844,14 @@
         "https://xbox-news.ru/news/1049425/",
         "https://sport24.ru/cybersport/article-kak-oboyti-oshibku-regiona-na-xbox"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://xbox-news.ru/news/1049425/",
       "dns_check": {
         "status": "unsafe",
-        "checked_at": "2026-04-16T09:08:04+00:00",
+        "checked_at": "2026-04-17T09:06:55+00:00",
         "resolved_ip": "195.123.210.89"
       }
     },
@@ -872,14 +872,14 @@
         "https://teletype.in/@faqi/Nastroyka-DNS-dlya-Xbox-Series-X-S-v-Rossii-2025-o",
         "https://sport24.ru/cybersport/article-kak-oboyti-oshibku-regiona-na-xbox"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://xbox-news.ru/news/1049425/",
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:08:05+00:00",
+        "checked_at": "2026-04-17T09:06:55+00:00",
         "resolved_ip": null
       }
     },
@@ -896,14 +896,14 @@
       "source_urls": [
         "https://xbox-news.ru/news/1049425/"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://xbox-news.ru/news/1049425/",
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:08:10+00:00",
+        "checked_at": "2026-04-17T09:07:00+00:00",
         "resolved_ip": null
       }
     },
@@ -922,14 +922,14 @@
         "https://xbox-news.ru/news/1049425/",
         "https://sport24.ru/cybersport/article-kak-oboyti-oshibku-regiona-na-xbox"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://xbox-news.ru/news/1049425/",
       "dns_check": {
         "status": "not_working",
-        "checked_at": "2026-04-16T09:08:15+00:00",
+        "checked_at": "2026-04-17T09:07:06+00:00",
         "resolved_ip": "40.90.8.102"
       }
     },
@@ -946,14 +946,14 @@
       "source_urls": [
         "https://xbox-news.ru/news/1049425/"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://xbox-news.ru/news/1049425/",
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:08:16+00:00",
+        "checked_at": "2026-04-17T09:07:06+00:00",
         "resolved_ip": null
       }
     },
@@ -970,14 +970,14 @@
       "source_urls": [
         "https://xbox-news.ru/news/1049425/"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://xbox-news.ru/news/1049425/",
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:08:21+00:00",
+        "checked_at": "2026-04-17T09:07:11+00:00",
         "resolved_ip": null
       }
     },
@@ -998,14 +998,14 @@
         "https://teletype.in/@faqi/Nastroyka-DNS-dlya-Xbox-Series-X-S-v-Rossii-2025-o",
         "https://sport24.ru/cybersport/article-kak-oboyti-oshibku-regiona-na-xbox"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://xbox-news.ru/news/1049425/",
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:08:26+00:00",
+        "checked_at": "2026-04-17T09:07:17+00:00",
         "resolved_ip": null
       }
     },
@@ -1022,14 +1022,14 @@
       "source_urls": [
         "https://xbox-news.ru/news/1049425/"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://xbox-news.ru/news/1049425/",
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:08:32+00:00",
+        "checked_at": "2026-04-17T09:07:22+00:00",
         "resolved_ip": null
       }
     },
@@ -1046,14 +1046,14 @@
       "source_urls": [
         "https://teletype.in/@faqi/Nastroyka-DNS-dlya-Xbox-Series-X-S-v-Rossii-2025-o"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://teletype.in/@faqi/Nastroyka-DNS-dlya-Xbox-Series-X-S-v-Rossii-2025-o",
       "dns_check": {
         "status": "not_working",
-        "checked_at": "2026-04-16T09:08:37+00:00",
+        "checked_at": "2026-04-17T09:07:28+00:00",
         "resolved_ip": "40.90.8.102"
       }
     },
@@ -1070,14 +1070,14 @@
       "source_urls": [
         "https://teletype.in/@faqi/Nastroyka-DNS-dlya-Xbox-Series-X-S-v-Rossii-2025-o"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://teletype.in/@faqi/Nastroyka-DNS-dlya-Xbox-Series-X-S-v-Rossii-2025-o",
       "dns_check": {
         "status": "not_working",
-        "checked_at": "2026-04-16T09:08:37+00:00",
+        "checked_at": "2026-04-17T09:07:28+00:00",
         "resolved_ip": "40.90.8.102"
       }
     },
@@ -1094,14 +1094,14 @@
       "source_urls": [
         "https://teletype.in/@faqi/Nastroyka-DNS-dlya-Xbox-Series-X-S-v-Rossii-2025-o"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://teletype.in/@faqi/Nastroyka-DNS-dlya-Xbox-Series-X-S-v-Rossii-2025-o",
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:08:37+00:00",
+        "checked_at": "2026-04-17T09:07:28+00:00",
         "resolved_ip": null
       }
     },
@@ -1118,14 +1118,14 @@
       "source_urls": [
         "https://teletype.in/@faqi/Nastroyka-DNS-dlya-Xbox-Series-X-S-v-Rossii-2025-o"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://teletype.in/@faqi/Nastroyka-DNS-dlya-Xbox-Series-X-S-v-Rossii-2025-o",
       "dns_check": {
         "status": "not_working",
-        "checked_at": "2026-04-16T09:08:43+00:00",
+        "checked_at": "2026-04-17T09:07:33+00:00",
         "resolved_ip": "40.90.8.102"
       }
     },
@@ -1142,14 +1142,14 @@
       "source_urls": [
         "https://teletype.in/@faqi/Nastroyka-DNS-dlya-Xbox-Series-X-S-v-Rossii-2025-o"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://teletype.in/@faqi/Nastroyka-DNS-dlya-Xbox-Series-X-S-v-Rossii-2025-o",
       "dns_check": {
         "status": "not_working",
-        "checked_at": "2026-04-16T09:08:43+00:00",
+        "checked_at": "2026-04-17T09:07:33+00:00",
         "resolved_ip": "40.90.8.102"
       }
     },
@@ -1166,15 +1166,15 @@
       "source_urls": [
         "https://xboxstor.ru/news-xbox/novoe-reshenie-oshibki-0x80a40401-dlya-konsoli-xbox-821"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://xboxstor.ru/news-xbox/novoe-reshenie-oshibki-0x80a40401-dlya-konsoli-xbox-821",
       "dns_check": {
         "status": "not_working",
-        "checked_at": "2026-04-16T09:08:43+00:00",
-        "resolved_ip": "20.201.200.49"
+        "checked_at": "2026-04-17T09:07:33+00:00",
+        "resolved_ip": "40.90.8.93"
       }
     },
     {
@@ -1190,14 +1190,14 @@
       "source_urls": [
         "https://xboxstor.ru/news-xbox/novoe-reshenie-oshibki-0x80a40401-dlya-konsoli-xbox-821"
       ],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": "https://xboxstor.ru/news-xbox/novoe-reshenie-oshibki-0x80a40401-dlya-konsoli-xbox-821",
       "dns_check": {
         "status": "timeout",
-        "checked_at": "2026-04-16T09:08:43+00:00",
+        "checked_at": "2026-04-17T09:07:33+00:00",
         "resolved_ip": null
       }
     },
@@ -1212,14 +1212,14 @@
         "derived_from_dns"
       ],
       "source_urls": [],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "reachable",
-        "checked_at": "2026-04-16T09:09:50+00:00",
+        "checked_at": "2026-04-17T09:08:39+00:00",
         "resolved_ip": "31.192.108.180"
       }
     },
@@ -1234,14 +1234,14 @@
         "derived_from_dns"
       ],
       "source_urls": [],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "reachable",
-        "checked_at": "2026-04-16T09:09:50+00:00",
+        "checked_at": "2026-04-17T09:08:39+00:00",
         "resolved_ip": "87.228.47.196"
       }
     },
@@ -1256,14 +1256,14 @@
         "derived_from_dns"
       ],
       "source_urls": [],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "reachable",
-        "checked_at": "2026-04-16T09:09:50+00:00",
+        "checked_at": "2026-04-17T09:08:40+00:00",
         "resolved_ip": "111.88.96.50"
       }
     },
@@ -1278,14 +1278,14 @@
         "derived_from_dns"
       ],
       "source_urls": [],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "reachable",
-        "checked_at": "2026-04-16T09:09:51+00:00",
+        "checked_at": "2026-04-17T09:08:40+00:00",
         "resolved_ip": "111.88.96.51"
       }
     },
@@ -1300,14 +1300,14 @@
         "derived_from_dns"
       ],
       "source_urls": [],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "reachable",
-        "checked_at": "2026-04-16T09:09:51+00:00",
+        "checked_at": "2026-04-17T09:08:40+00:00",
         "resolved_ip": "31.129.110.240"
       }
     },
@@ -1322,14 +1322,14 @@
         "derived_from_dns"
       ],
       "source_urls": [],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "reachable",
-        "checked_at": "2026-04-16T09:09:56+00:00",
+        "checked_at": "2026-04-17T09:08:45+00:00",
         "resolved_ip": "95.216.232.133"
       }
     },
@@ -1344,14 +1344,14 @@
         "derived_from_dns"
       ],
       "source_urls": [],
-      "first_seen": "2026-04-16",
-      "last_seen": "2026-04-16",
+      "first_seen": "2026-04-17",
+      "last_seen": "2026-04-17",
       "active": true,
       "recheck": false,
       "instruction_url": null,
       "dns_check": {
         "status": "reachable",
-        "checked_at": "2026-04-16T09:09:56+00:00",
+        "checked_at": "2026-04-17T09:08:46+00:00",
         "resolved_ip": "195.123.210.89"
       }
     }
@@ -1362,7 +1362,7 @@
       "name": "Xbox News RU (Telegram)",
       "type": "telegram",
       "url": "https://t.me/s/xboxnews_ru",
-      "last_parsed": "2026-04-16T09:07:10+00:00",
+      "last_parsed": "2026-04-17T09:05:53+00:00",
       "status": "ok",
       "error_message": null
     },
@@ -1371,7 +1371,7 @@
       "name": "Xbox DNS (Telegram)",
       "type": "telegram",
       "url": "https://t.me/s/xbox_dns",
-      "last_parsed": "2026-04-16T09:07:10+00:00",
+      "last_parsed": "2026-04-17T09:05:53+00:00",
       "status": "ok",
       "error_message": null
     },
@@ -1380,7 +1380,7 @@
       "name": "chipslays/0x80a40401",
       "type": "github",
       "url": "https://raw.githubusercontent.com/chipslays/0x80a40401/main/README.md",
-      "last_parsed": "2026-04-16T09:07:10+00:00",
+      "last_parsed": "2026-04-17T09:05:53+00:00",
       "status": "ok",
       "error_message": null
     },
@@ -1389,7 +1389,7 @@
       "name": "xbox-dns.ru",
       "type": "website",
       "url": "https://xbox-dns.ru",
-      "last_parsed": "2026-04-16T09:07:10+00:00",
+      "last_parsed": "2026-04-17T09:05:53+00:00",
       "status": "ok",
       "error_message": null
     },
@@ -1398,7 +1398,7 @@
       "name": "xbox-news.ru",
       "type": "website",
       "url": "https://xbox-news.ru/news/1049425/",
-      "last_parsed": "2026-04-16T09:07:10+00:00",
+      "last_parsed": "2026-04-17T09:05:53+00:00",
       "status": "ok",
       "error_message": null
     },
@@ -1407,7 +1407,7 @@
       "name": "skorches/xbox-dns-bypass",
       "type": "github",
       "url": "https://github.com/skorches/xbox-dns-bypass",
-      "last_parsed": "2026-04-16T09:07:10+00:00",
+      "last_parsed": "2026-04-17T09:05:53+00:00",
       "status": "ok",
       "error_message": null
     },
@@ -1416,7 +1416,7 @@
       "name": "teletype.in/@faqi (гайд)",
       "type": "website",
       "url": "https://teletype.in/@faqi/Nastroyka-DNS-dlya-Xbox-Series-X-S-v-Rossii-2025-o",
-      "last_parsed": "2026-04-16T09:07:10+00:00",
+      "last_parsed": "2026-04-17T09:05:53+00:00",
       "status": "ok",
       "error_message": null
     },
@@ -1425,7 +1425,7 @@
       "name": "sport24.ru (гайд)",
       "type": "website",
       "url": "https://sport24.ru/cybersport/article-kak-oboyti-oshibku-regiona-na-xbox",
-      "last_parsed": "2026-04-16T09:07:10+00:00",
+      "last_parsed": "2026-04-17T09:05:53+00:00",
       "status": "ok",
       "error_message": null
     },
@@ -1434,7 +1434,7 @@
       "name": "xboxstor.ru",
       "type": "website",
       "url": "https://xboxstor.ru/news-xbox/novoe-reshenie-oshibki-0x80a40401-dlya-konsoli-xbox-821",
-      "last_parsed": "2026-04-16T09:07:10+00:00",
+      "last_parsed": "2026-04-17T09:05:53+00:00",
       "status": "ok",
       "error_message": null
     }
